@@ -802,6 +802,93 @@
             color: #1a3a6b;
         }
 
+        /* ===== 集团批次合作区域 ===== */
+        .batch-area {
+            margin-top: 10px;
+            padding: 12px 14px;
+            background: #f5f9ff;
+            border-radius: 10px;
+            border: 1px solid #d4e2f0;
+        }
+        .batch-area .batch-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #1a3a6b;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .batch-area .batch-title .batch-badge {
+            font-size: 11px;
+            background: #1a3a6b;
+            color: #fff;
+            padding: 0 10px;
+            border-radius: 12px;
+            font-weight: 400;
+        }
+        .batch-area .batch-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .batch-area .batch-row .batch-group {
+            flex: 1;
+            min-width: 80px;
+        }
+        .batch-area .batch-row .batch-group label {
+            font-size: 11px;
+            font-weight: 500;
+            color: #4a5a72;
+            display: block;
+            margin-bottom: 2px;
+        }
+        .batch-area .batch-row .batch-group input {
+            width: 100%;
+            padding: 6px 10px;
+            font-size: 13px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 8px;
+            background: #fff;
+            color: #1a2332;
+            outline: none;
+            font-weight: 500;
+            transition: border 0.2s;
+        }
+        .batch-area .batch-row .batch-group input:focus {
+            border-color: #2a5a9a;
+        }
+        .batch-area .batch-row .batch-group input:disabled {
+            background: #f0f2f5;
+            color: #8895aa;
+        }
+        .batch-area .batch-result {
+            margin-top: 8px;
+            padding: 8px 12px;
+            background: #e8f0fe;
+            border-radius: 8px;
+            font-size: 12px;
+            color: #1a3a6b;
+            display: none;
+        }
+        .batch-area .batch-result.show {
+            display: block;
+        }
+        .batch-area .batch-result .br-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 2px 0;
+        }
+        .batch-area .batch-result .br-row .br-label {
+            color: #4a5a72;
+        }
+        .batch-area .batch-result .br-row .br-value {
+            font-weight: 600;
+        }
+        .batch-area .batch-result .br-row .br-value .highlight {
+            color: #1a3a6b;
+        }
+
         .group-remarks {
             margin-top: 10px;
             padding: 10px 14px;
@@ -885,19 +972,25 @@
             .preview-popup .preview-actions {
                 flex-direction: column;
             }
+            .batch-area .batch-row {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
 
     <div class="container">
+        <!-- 头部 -->
         <div class="header">
             <h1>🏨 华客产品报价计算器</h1>
             <p>搜索添加 · 支持多年签约 · 导出 xlsx</p>
         </div>
 
+        <!-- ===== 报价条件 ===== -->
         <div class="card">
             <div class="card-title">📋 报价条件</div>
+
             <div class="filter-row">
                 <div class="filter-group">
                     <label>价格权限</label>
@@ -915,6 +1008,8 @@
                     </select>
                 </div>
             </div>
+
+            <!-- 营销助手价格类型 -->
             <div class="filter-row marketing-price-type" id="marketingPriceRow">
                 <div class="filter-group">
                     <label>📊 营销助手价格类型</label>
@@ -927,6 +1022,7 @@
                 </div>
                 <div class="filter-group" style="flex:1;"></div>
             </div>
+
             <div class="filter-row">
                 <div class="filter-group hidden-group" id="groupScaleGroup">
                     <label>集团规模</label>
@@ -940,6 +1036,7 @@
             </div>
         </div>
 
+        <!-- ===== 酒店/集团信息 ===== -->
         <div class="card" id="singleHotelCard">
             <div class="card-title">🏨 酒店信息</div>
             <div class="filter-row" style="margin-top:4px;">
@@ -971,18 +1068,23 @@
             </div>
         </div>
 
+        <!-- ===== 集团信息（含批次合作） ===== -->
         <div class="card" id="groupHotelCard" style="display:none;">
             <div class="card-title">🏛️ 集团信息</div>
+
+            <!-- 集团基本信息 -->
             <div class="filter-row" style="margin-top:4px;">
                 <div class="filter-group">
                     <label>🏛️ 集团名称 <span class="required">*</span></label>
                     <input type="text" id="groupName" placeholder="如：华住集团" style="font-weight:400;">
                 </div>
             </div>
+
+            <!-- 门店数量 + 平均房间数 -->
             <div class="filter-row" style="margin-top:4px;">
                 <div class="filter-group" style="flex:1.2;">
-                    <label>🏢 门店数量 <span class="required">*</span> <span class="range-hint" id="storeRangeHint">(5-29)</span></label>
-                    <input type="number" id="groupStoreCount" placeholder="如 15" min="5" max="29" style="font-weight:400;">
+                    <label>🏢 本次合作新增门店数 <span class="required">*</span></label>
+                    <input type="number" id="groupStoreCount" placeholder="如 10" min="1" style="font-weight:400;">
                     <div class="error-msg" id="groupStoreError">⚠️ 请输入有效门店数量</div>
                 </div>
                 <div class="filter-group" style="flex:1;">
@@ -991,12 +1093,64 @@
                     <div class="error-msg" id="groupRoomError">⚠️ 请填写平均房间数</div>
                 </div>
             </div>
+
+            <!-- ===== 批次合作区域 ===== -->
+            <div class="batch-area">
+                <div class="batch-title">
+                    📦 批次合作设置
+                    <span class="batch-badge">阶梯报价</span>
+                </div>
+                <div class="batch-row">
+                    <div class="batch-group">
+                        <label>合作批次</label>
+                        <input type="number" id="batchNumber" placeholder="如 2" min="1" value="1">
+                    </div>
+                    <div class="batch-group">
+                        <label>历史累计酒店数</label>
+                        <input type="number" id="historyTotal" placeholder="如 25" min="0" value="0">
+                    </div>
+                    <div class="batch-group">
+                        <label>档位选择</label>
+                        <select id="batchScaleSelect">
+                            <option value="5-29">5-29家</option>
+                            <option value="30-99">30-99家</option>
+                            <option value="100-999">100-999家</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="batch-result" id="batchResult">
+                    <div class="br-row">
+                        <span class="br-label">历史累计</span>
+                        <span class="br-value" id="brHistory">0 家</span>
+                    </div>
+                    <div class="br-row">
+                        <span class="br-label">本次新增</span>
+                        <span class="br-value" id="brNew">0 家</span>
+                    </div>
+                    <div class="br-row">
+                        <span class="br-label">累计总数</span>
+                        <span class="br-value" id="brTotal">0 家</span>
+                    </div>
+                    <div class="br-row">
+                        <span class="br-label">适用档位</span>
+                        <span class="br-value" id="brScale">-</span>
+                    </div>
+                    <div class="br-row" style="border-top:1px dashed #cddae9;padding-top:4px;margin-top:2px;">
+                        <span class="br-label">📌 报价说明</span>
+                        <span class="br-value" id="brNote" style="font-weight:400;font-size:11px;color:#4a5a72;">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 预估总房间数 -->
             <div class="group-info-area" id="groupInfoArea">
                 <div class="info-row">
                     <span class="label">📊 预估总房间数</span>
                     <span class="value" id="groupTotalRoom">-</span>
                 </div>
             </div>
+
+            <!-- 集团备注 -->
             <div class="group-remarks" id="groupRemarks">
                 <div class="remark-title">📌 集团报价说明</div>
                 <div class="remark-item">如集团分批次合作，则按照阶梯报价：举例1个集团首批合作酒店数25家，第二批合作10家，则合作的前29家按照第一档位即<span class="highlight">5-29家</span>的报价标准，30-35家的酒店以第二档位即<span class="highlight">30-99家</span>的报价标准</div>
@@ -1006,6 +1160,7 @@
             </div>
         </div>
 
+        <!-- ===== 添加产品 ===== -->
         <div class="card">
             <div class="card-title">
                 🔍 添加产品
@@ -1027,6 +1182,7 @@
             <div class="search-results" id="searchResults"></div>
         </div>
 
+        <!-- ===== 已选产品清单 ===== -->
         <div class="card" id="selectedCard">
             <div class="card-title">
                 📋 已选产品清单
@@ -1037,6 +1193,7 @@
             </div>
         </div>
 
+        <!-- ===== 汇总 + 保存 ===== -->
         <div class="result-box" id="resultBox">
             <div class="result-row">
                 <span class="label">已选产品合计（年费）</span>
@@ -1055,6 +1212,7 @@
         </div>
     </div>
 
+    <!-- 备注弹窗 -->
     <div class="remark-popup" id="remarkPopup">
         <div class="popup-content">
             <div class="popup-title" id="popupTitle">📌 产品说明</div>
@@ -1063,6 +1221,7 @@
         </div>
     </div>
 
+    <!-- 预览弹窗 -->
     <div class="preview-popup" id="previewPopup">
         <div class="preview-content">
             <div class="preview-title" id="previewTitle">📄 报价单预览</div>
@@ -1077,8 +1236,7 @@
 
     <script>
         // ================================================================
-        //  📋 产品维护区 - 所有产品集中定义，方便维护
-        //  修改价格直接改对应的数字即可
+        //  📋 产品维护区
         // ================================================================
 
         const ROOM_RANGES = [
@@ -1098,18 +1256,8 @@
         //  营销助手独立价格配置
         // ================================================================
         const MARKETING_PRICES = {
-            'marketing_std': {
-                market: 13999,
-                new_customer: 9999,
-                existing_customer: 6999,
-                group: 6099
-            },
-            'marketing_ai': {
-                market: 18999,
-                new_customer: 12999,
-                existing_customer: 9999,
-                group: 8799
-            }
+            'marketing_std': { market: 13999, new_customer: 9999, existing_customer: 6999, group: 6099 },
+            'marketing_ai': { market: 18999, new_customer: 12999, existing_customer: 9999, group: 8799 }
         };
 
         function isMarketingProduct(productId) {
@@ -1688,8 +1836,108 @@
         const marketingPriceType = $('marketingPriceType');
         const marketingPriceRow = $('marketingPriceRow');
 
+        // 批次合作元素
+        const batchNumber = $('batchNumber');
+        const historyTotal = $('historyTotal');
+        const batchScaleSelect = $('batchScaleSelect');
+        const batchResult = $('batchResult');
+        const brHistory = $('brHistory');
+        const brNew = $('brNew');
+        const brTotal = $('brTotal');
+        const brScale = $('brScale');
+        const brNote = $('brNote');
+
         // ================================================================
-        //  集团规模联动
+        //  批次合作计算
+        // ================================================================
+
+        function updateBatchResult() {
+            const batch = parseInt(batchNumber.value) || 1;
+            const history = parseInt(historyTotal.value) || 0;
+            const newCount = parseInt(groupStoreCount.value) || 0;
+            const total = history + newCount;
+
+            // 确定适用档位
+            let scale = '5-29';
+            let scaleLabel = '5-29家';
+            let note = '';
+
+            if (total >= 100) {
+                scale = '100-999';
+                scaleLabel = '100-999家';
+            } else if (total >= 30) {
+                scale = '30-99';
+                scaleLabel = '30-99家';
+            } else {
+                scale = '5-29';
+                scaleLabel = '5-29家';
+            }
+
+            // 更新集团规模下拉框（联动）
+            if (groupScale.value !== scale) {
+                groupScale.value = scale;
+                groupScale.dispatchEvent(new Event('change'));
+                // 更新门店范围提示
+                updateStoreRange();
+            }
+
+            // 生成报价说明
+            if (batch === 1) {
+                note = `首批合作 ${newCount} 家，累计 ${total} 家，适用「${scaleLabel}」档位报价`;
+            } else {
+                if (history > 0) {
+                    note =
+                    `第 ${batch} 批合作新增 ${newCount} 家，历史已合作 ${history} 家，累计 ${total} 家，适用「${scaleLabel}」档位报价`;
+                } else {
+                    note = `第 ${batch} 批合作新增 ${newCount} 家，累计 ${total} 家，适用「${scaleLabel}」档位报价`;
+                }
+            }
+
+            // 特殊说明
+            if (total >= 1000) {
+                note += '（⚠️ 合作酒店数已达1000家以上，可一单一议）';
+            }
+
+            // 更新显示
+            brHistory.textContent = history + ' 家';
+            brNew.textContent = newCount + ' 家';
+            brTotal.textContent = total + ' 家';
+            brScale.textContent = scaleLabel;
+            brNote.textContent = note;
+
+            batchResult.classList.add('show');
+
+            // 更新预估总房间数
+            updateGroupInfo();
+        }
+
+        // 批次输入事件绑定
+        batchNumber.addEventListener('input', updateBatchResult);
+        historyTotal.addEventListener('input', updateBatchResult);
+        groupStoreCount.addEventListener('input', function() {
+            updateBatchResult();
+            // 同时更新门店数量校验
+            const scale = groupScale.value;
+            const config = GROUP_SCALE_CONFIG[scale];
+            if (config) {
+                let val = parseInt(this.value) || 0;
+                if (val > 0) {
+                    if (val < config.min) {
+                        showStoreError(`门店数量不能少于 ${config.min} 家`);
+                    } else if (val > config.max) {
+                        showStoreError(`门店数量不能超过 ${config.max} 家（当前规模为 ${config.label}）`);
+                    } else {
+                        hideStoreError();
+                    }
+                } else {
+                    hideStoreError();
+                }
+            }
+        });
+        groupAvgRoom.addEventListener('input', updateGroupInfo);
+
+        // ================================================================
+        //  集团规模联动（保持原有功能）
         // ================================================================
 
         const GROUP_SCALE_CONFIG = {
@@ -1698,12 +1946,15 @@
             '100-999': { min: 100, max: 999, label: '100-999家' }
         };
 
+        const storeRangeHint = document.getElementById('storeRangeHint');
+
         function updateStoreRange() {
             const scale = groupScale.value;
             const config = GROUP_SCALE_CONFIG[scale];
             if (config) {
-                const hint = document.getElementById('storeRangeHint');
-                hint.textContent = `(${config.min}-${config.max})`;
+                if (storeRangeHint) {
+                    storeRangeHint.textContent = `(${config.min}-${config.max})`;
+                }
                 groupStoreCount.min = config.min;
                 groupStoreCount.max = config.max;
                 groupStoreCount.placeholder = `如 ${Math.floor((config.min + config.max) / 2)}`;
@@ -1720,20 +1971,26 @@
                         hideStoreError();
                     }
                 }
+                updateBatchResult();
                 updateGroupInfo();
             }
         }
 
         function showStoreError(msg) {
             const errorEl = document.getElementById('groupStoreError');
-            errorEl.textContent = '⚠️ ' + msg;
-            errorEl.classList.add('show');
-            groupStoreCount.style.borderColor = '#e74c3c';
+            if (errorEl) {
+                errorEl.textContent = '⚠️ ' + msg;
+                errorEl.classList.add('show');
+                groupStoreCount.style.borderColor = '#e74c3c';
+            }
         }
 
         function hideStoreError() {
-            document.getElementById('groupStoreError').classList.remove('show');
-            groupStoreCount.style.borderColor = '';
+            const errorEl = document.getElementById('groupStoreError');
+            if (errorEl) {
+                errorEl.classList.remove('show');
+                groupStoreCount.style.borderColor = '';
+            }
         }
 
         groupScale.addEventListener('change', function() {
@@ -1744,56 +2001,16 @@
             updateAvailableCount();
         });
 
-        groupStoreCount.addEventListener('input', function() {
-            const scale = groupScale.value;
-            const config = GROUP_SCALE_CONFIG[scale];
-            if (!config) return;
-
-            let val = parseInt(this.value) || 0;
-            if (val > 0) {
-                if (val < config.min) {
-                    showStoreError(`门店数量不能少于 ${config.min} 家`);
-                } else if (val > config.max) {
-                    showStoreError(`门店数量不能超过 ${config.max} 家（当前规模为 ${config.label}）`);
-                } else {
-                    hideStoreError();
-                }
-            } else {
-                hideStoreError();
-            }
-            updateGroupInfo();
-        });
-
-        groupStoreCount.addEventListener('blur', function() {
-            const scale = groupScale.value;
-            const config = GROUP_SCALE_CONFIG[scale];
-            if (!config) return;
-
-            let val = parseInt(this.value) || 0;
-            if (val > 0) {
-                if (val < config.min) {
-                    this.value = config.min;
-                    showStoreError(`已自动修正为 ${config.min}（最少 ${config.min} 家）`);
-                    setTimeout(() => hideStoreError(), 3000);
-                } else if (val > config.max) {
-                    this.value = config.max;
-                    showStoreError(`已自动修正为 ${config.max}（最多 ${config.max} 家）`);
-                    setTimeout(() => hideStoreError(), 3000);
-                }
-            }
-            updateGroupInfo();
-        });
-
         // ================================================================
         //  集团信息更新
         // ================================================================
 
         function updateGroupInfo() {
-            const count = parseInt(groupStoreCount.value) || 0;
+            const newCount = parseInt(groupStoreCount.value) || 0;
             const avg = parseInt(groupAvgRoom.value) || 0;
 
-            if (count > 0 && avg > 0) {
-                const total = count * avg;
+            if (newCount > 0 && avg > 0) {
+                const total = newCount * avg;
                 groupTotalRoom.textContent = total + ' 间';
                 groupInfoArea.classList.add('show');
                 state.roomCount = total;
@@ -1802,8 +2019,6 @@
                 groupInfoArea.classList.remove('show');
             }
         }
-
-        groupAvgRoom.addEventListener('input', updateGroupInfo);
 
         // ================================================================
         //  🔍 酒店查询
@@ -1980,7 +2195,10 @@
                 groupScaleGroup.classList.add('show');
                 singleHotelCard.style.display = 'none';
                 groupHotelCard.style.display = 'block';
-                setTimeout(updateStoreRange, 50);
+                setTimeout(() => {
+                    updateStoreRange();
+                    updateBatchResult();
+                }, 50);
                 marketingPriceRow.classList.add('show');
             } else {
                 groupScaleGroup.classList.remove('show');
@@ -1999,7 +2217,7 @@
         });
 
         // ================================================================
-        //  产品相关函数
+        //  产品相关函数（与之前保持一致）
         // ================================================================
 
         function getProductPrice(product) {
@@ -2604,6 +2822,11 @@
             const totalAmount = items.reduce((sum, item) => sum + item.total, 0);
 
             const isGroup = state.customerType === 'group';
+            const batch = parseInt(batchNumber?.value) || 1;
+            const history = parseInt(historyTotal?.value) || 0;
+            const newCount = parseInt(groupStoreCount?.value) || 0;
+            const totalCount = history + newCount;
+
             return {
                 hotelId: isGroup ? '' : hotelId.value.trim() || '',
                 hotelName: isGroup ? groupName.value.trim() || '' : hotelName.value.trim() || '',
@@ -2611,8 +2834,11 @@
                 priceLevel: priceLevel.options[priceLevel.selectedIndex].text,
                 customerType: customerType.options[customerType.selectedIndex].text,
                 groupScale: state.customerType === 'group' ? groupScale.options[groupScale.selectedIndex].text : '-',
-                groupStoreCount: state.customerType === 'group' ? groupStoreCount.value || 0 : 0,
+                groupStoreCount: state.customerType === 'group' ? newCount : 0,
                 groupAvgRoom: state.customerType === 'group' ? groupAvgRoom.value || 0 : 0,
+                batchNumber: state.customerType === 'group' ? batch : 0,
+                historyTotal: state.customerType === 'group' ? history : 0,
+                totalCount: state.customerType === 'group' ? totalCount : 0,
                 items: items,
                 totalAmount: totalAmount,
                 generatedAt: new Date().toLocaleString('zh-CN')
@@ -2642,7 +2868,7 @@
             let hotelInfo = '';
             if (isGroup) {
                 hotelInfo =
-                    `🏛️ ${data.hotelName || '未填写集团名称'}（${data.groupStoreCount}家门店，平均${data.groupAvgRoom}间/店）`;
+                    `🏛️ ${data.hotelName || '未填写集团名称'}（本次新增${data.groupStoreCount}家，累计${data.totalCount}家，平均${data.groupAvgRoom}间/店）`;
             } else {
                 hotelInfo = `🏨 ${data.hotelName || '未填写酒店名称'} ${data.hotelId ? '（ID: ' + data.hotelId + '）' : ''}`;
             }
@@ -2697,7 +2923,7 @@
             let hotelInfo = '';
             if (isGroup) {
                 hotelInfo =
-                    `🏛️ ${data.hotelName || '未填写集团名称'}（${data.groupStoreCount}家门店，平均${data.groupAvgRoom}间/店）`;
+                    `🏛️ ${data.hotelName || '未填写集团名称'}（本次新增${data.groupStoreCount}家，累计${data.totalCount}家，平均${data.groupAvgRoom}间/店）`;
             } else {
                 hotelInfo = `🏨 ${data.hotelName || '未填写酒店名称'} ${data.hotelId ? '（ID: ' + data.hotelId + '）' : ''}`;
             }
@@ -2761,7 +2987,7 @@
                 let hotelInfo = '';
                 if (isGroup) {
                     hotelInfo =
-                        `${data.hotelName || '未填写集团名称'}（${data.groupStoreCount}家门店，平均${data.groupAvgRoom}间/店）`;
+                        `${data.hotelName || '未填写集团名称'}（本次新增${data.groupStoreCount}家，累计${data.totalCount}家，平均${data.groupAvgRoom}间/店）`;
                 } else {
                     hotelInfo = `${data.hotelName || '未填写酒店名称'} ${data.hotelId ? '（ID: ' + data.hotelId + '）' : ''}`;
                 }
@@ -2849,6 +3075,11 @@
         setTimeout(() => {
             categoryFilter.dispatchEvent(new Event('change'));
         }, 100);
+
+        // 初始化批次结果（默认显示）
+        setTimeout(() => {
+            updateBatchResult();
+        }, 200);
     </script>
 
 </body>
