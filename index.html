@@ -7,7 +7,7 @@
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js">
     </script>
     <style>
-        /* ===== 全局样式 ===== */
+        /* ===== 全局重置 & 布局 — 无留白，紧凑 ===== */
         * {
             margin: 0;
             padding: 0;
@@ -16,44 +16,46 @@
         body {
             font-family: -apple-system, "PingFang SC", "Helvetica Neue", Arial, sans-serif;
             background: #f0f2f5;
-            padding: 16px 12px 40px;
+            padding: 10px 0 40px;
             color: #1a2332;
         }
         .container {
             max-width: 560px;
             margin: 0 auto;
+            padding: 0 4px;
+            position: relative;
         }
         .header {
             background: linear-gradient(145deg, #1a3a6b, #2a5a9a);
             color: #fff;
-            border-radius: 16px;
-            padding: 20px 20px 18px;
-            margin-bottom: 16px;
+            border-radius: 14px;
+            padding: 12px 14px 10px;
+            margin-bottom: 10px;
         }
         .header h1 {
-            font-size: 20px;
+            font-size: 19px;
             font-weight: 700;
         }
         .header p {
-            font-size: 13px;
+            font-size: 12px;
             opacity: 0.8;
-            margin-top: 4px;
+            margin-top: 1px;
         }
         .card {
             background: #fff;
             border-radius: 14px;
-            padding: 16px 16px 18px;
-            margin-bottom: 14px;
+            padding: 10px 12px 12px;
+            margin-bottom: 10px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
         }
         .card-title {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 700;
             color: #1a3a6b;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             flex-wrap: wrap;
         }
         .card-title .badge {
@@ -65,7 +67,7 @@
             font-weight: 500;
         }
         .card-title .count-badge {
-            font-size: 12px;
+            font-size: 11px;
             background: #1a3a6b;
             color: #fff;
             padding: 0 10px;
@@ -75,20 +77,20 @@
         }
         .filter-row {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             flex-wrap: wrap;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
         }
         .filter-group {
             flex: 1;
-            min-width: 100px;
+            min-width: 90px;
         }
         .filter-group label {
             display: block;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
             color: #4a5a72;
-            margin-bottom: 3px;
+            margin-bottom: 2px;
         }
         .filter-group label .required {
             color: #e74c3c;
@@ -96,13 +98,13 @@
         .filter-group label .range-hint {
             font-weight: 400;
             color: #8895aa;
-            font-size: 11px;
+            font-size: 10px;
         }
         .filter-group select,
         .filter-group input {
             width: 100%;
-            padding: 9px 12px;
-            font-size: 14px;
+            padding: 6px 10px;
+            font-size: 13px;
             border: 1.5px solid #e2e8f0;
             border-radius: 10px;
             background: #f8fafc;
@@ -121,8 +123,8 @@
         .filter-group select {
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238895aa' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
-            background-position: right 12px center;
-            padding-right: 36px;
+            background-position: right 10px center;
+            padding-right: 32px;
         }
         .filter-group.hidden-group {
             display: none;
@@ -132,17 +134,17 @@
         }
         .filter-group .error-msg {
             color: #e74c3c;
-            font-size: 12px;
-            margin-top: 4px;
+            font-size: 11px;
+            margin-top: 3px;
             display: none;
         }
         .filter-group .error-msg.show {
             display: block;
         }
         .filter-group .link-hint {
-            font-size: 12px;
+            font-size: 11px;
             color: #2a5a9a;
-            margin-top: 4px;
+            margin-top: 3px;
             word-break: break-all;
         }
         .filter-group .link-hint a {
@@ -157,21 +159,20 @@
             background: none;
             border: 1px solid #2a5a9a;
             color: #2a5a9a;
-            padding: 2px 10px;
+            padding: 1px 8px;
             border-radius: 6px;
-            font-size: 12px;
+            font-size: 11px;
             cursor: pointer;
-            margin-left: 6px;
+            margin-left: 4px;
             transition: all 0.2s;
         }
         .filter-group .link-hint .copy-btn:hover {
             background: #2a5a9a;
             color: #fff;
         }
-
         .hotel-query-row {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             align-items: flex-end;
         }
         .hotel-query-row .query-input-wrap {
@@ -179,8 +180,8 @@
         }
         .hotel-query-row .query-input-wrap input {
             width: 100%;
-            padding: 9px 12px;
-            font-size: 14px;
+            padding: 6px 10px;
+            font-size: 13px;
             border: 1.5px solid #e2e8f0;
             border-radius: 10px;
             background: #f8fafc;
@@ -194,8 +195,8 @@
             background: #fff;
         }
         .hotel-query-row .query-btn {
-            padding: 9px 18px;
-            font-size: 14px;
+            padding: 6px 14px;
+            font-size: 13px;
             font-weight: 600;
             border: none;
             border-radius: 10px;
@@ -204,7 +205,7 @@
             color: #fff;
             white-space: nowrap;
             transition: background 0.2s;
-            height: 42px;
+            height: 36px;
             flex-shrink: 0;
         }
         .hotel-query-row .query-btn:hover {
@@ -230,11 +231,10 @@
                 transform: rotate(360deg);
             }
         }
-
         .query-tip {
-            font-size: 13px;
-            margin-top: 6px;
-            padding: 6px 12px;
+            font-size: 12px;
+            margin-top: 4px;
+            padding: 4px 10px;
             border-radius: 8px;
             display: none;
             animation: fadeIn 0.3s ease;
@@ -262,21 +262,52 @@
                 transform: translateY(0);
             }
         }
-
+        .category-toggle {
+            display: flex;
+            gap: 3px;
+            background: #f0f2f5;
+            border-radius: 10px;
+            padding: 3px;
+            flex-wrap: wrap;
+            margin-bottom: 6px;
+        }
+        .category-toggle .cat-btn {
+            padding: 4px 14px;
+            font-size: 12px;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: transparent;
+            color: #4a5a72;
+            flex: 1;
+            min-width: 50px;
+            text-align: center;
+        }
+        .category-toggle .cat-btn:hover {
+            color: #1a3a6b;
+            background: rgba(26, 58, 107, 0.06);
+        }
+        .category-toggle .cat-btn.active {
+            background: #fff;
+            color: #1a3a6b;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+        }
         .search-add-area {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             flex-wrap: wrap;
         }
         .search-add-area .search-input-wrap {
             flex: 2;
-            min-width: 160px;
+            min-width: 140px;
             position: relative;
         }
         .search-add-area .search-input-wrap input {
             width: 100%;
-            padding: 10px 12px 10px 36px;
-            font-size: 14px;
+            padding: 6px 10px 6px 32px;
+            font-size: 13px;
             border: 1.5px solid #e2e8f0;
             border-radius: 10px;
             background: #f8fafc;
@@ -290,37 +321,15 @@
         }
         .search-add-area .search-input-wrap .icon {
             position: absolute;
-            left: 12px;
+            left: 10px;
             top: 50%;
             transform: translateY(-50%);
-            font-size: 16px;
+            font-size: 14px;
             opacity: 0.5;
             pointer-events: none;
         }
-        .search-add-area .category-select {
-            flex: 1;
-            min-width: 100px;
-        }
-        .search-add-area .category-select select {
-            width: 100%;
-            padding: 10px 12px;
-            font-size: 14px;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 10px;
-            background: #f8fafc;
-            color: #1a2332;
-            outline: none;
-            font-weight: 500;
-            appearance: none;
-            -webkit-appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238895aa' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 12px center;
-            padding-right: 36px;
-        }
-
         .search-results {
-            max-height: 300px;
+            max-height: 280px;
             overflow-y: auto;
             border: 1.5px solid #e2e8f0;
             border-top: none;
@@ -337,7 +346,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 14px;
+            padding: 8px 12px;
             border-bottom: 1px solid #f0f2f5;
             cursor: default;
             transition: background 0.15s;
@@ -349,18 +358,18 @@
             background: #f5f7fa;
         }
         .search-result-item .r-name {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 500;
             color: #1a2332;
         }
         .search-result-item .r-name .r-tag {
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 400;
             color: #8895aa;
-            margin-left: 6px;
+            margin-left: 4px;
         }
         .search-result-item .r-price {
-            font-size: 13px;
+            font-size: 12px;
             color: #1a3a6b;
             font-weight: 600;
         }
@@ -368,9 +377,9 @@
             background: #1a3a6b;
             color: #fff;
             border: none;
-            padding: 4px 14px;
+            padding: 3px 12px;
             border-radius: 8px;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             cursor: pointer;
             transition: background 0.2s;
@@ -379,13 +388,28 @@
         .search-result-item .r-add:hover {
             background: #2a5a9a;
         }
+        .search-result-item .r-del {
+            background: #b91c1c;
+            color: #fff;
+            border: none;
+            padding: 3px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            flex-shrink: 0;
+            margin-left: 4px;
+        }
+        .search-result-item .r-del:hover {
+            background: #991515;
+        }
         .search-empty {
-            padding: 20px;
+            padding: 16px;
             text-align: center;
             color: #bcc9db;
-            font-size: 14px;
+            font-size: 13px;
         }
-
         .selected-list {
             margin-top: 4px;
         }
@@ -393,9 +417,9 @@
             display: flex;
             align-items: flex-start;
             justify-content: space-between;
-            padding: 10px 0;
+            padding: 8px 0;
             border-bottom: 1px dashed #e8ecf2;
-            gap: 8px;
+            gap: 6px;
             flex-wrap: wrap;
         }
         .selected-item:last-child {
@@ -403,15 +427,15 @@
         }
         .selected-item .s-left {
             flex: 1;
-            min-width: 120px;
+            min-width: 100px;
         }
         .selected-item .s-name {
             font-weight: 600;
             color: #1a2332;
-            font-size: 14px;
+            font-size: 13px;
         }
         .selected-item .s-price {
-            font-size: 13px;
+            font-size: 12px;
             color: #4a5a72;
         }
         .selected-item .s-price strong {
@@ -420,18 +444,18 @@
         .selected-item .s-right {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
             flex-wrap: wrap;
         }
         .selected-item .s-right .year-input {
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 3px;
         }
         .selected-item .s-right .year-input input {
-            width: 52px;
-            padding: 4px 6px;
-            font-size: 13px;
+            width: 44px;
+            padding: 3px 4px;
+            font-size: 12px;
             border: 1.5px solid #e2e8f0;
             border-radius: 8px;
             text-align: center;
@@ -444,16 +468,16 @@
             background: #fff;
         }
         .selected-item .s-right .year-input .year-label {
-            font-size: 12px;
+            font-size: 11px;
             color: #4a5a72;
         }
         .selected-item .s-right .year-btns {
             display: flex;
-            gap: 3px;
+            gap: 2px;
         }
         .selected-item .s-right .year-btns button {
-            padding: 2px 8px;
-            font-size: 11px;
+            padding: 2px 6px;
+            font-size: 10px;
             border: 1px solid #e2e8f0;
             border-radius: 6px;
             background: #f8fafc;
@@ -473,19 +497,19 @@
             color: #fff;
         }
         .selected-item .s-total {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 700;
             color: #1a3a6b;
-            min-width: 80px;
+            min-width: 70px;
             text-align: right;
         }
         .selected-item .s-remove {
             color: #b91c1c;
             background: none;
             border: none;
-            font-size: 18px;
+            font-size: 16px;
             cursor: pointer;
-            padding: 0 4px;
+            padding: 0 3px;
             line-height: 1;
             opacity: 0.4;
             transition: opacity 0.2s;
@@ -497,16 +521,16 @@
             width: 100%;
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding-top: 4px;
+            gap: 6px;
+            padding-top: 3px;
             flex-wrap: wrap;
         }
         .selected-item .s-special-input input {
-            padding: 4px 10px;
-            font-size: 13px;
+            padding: 3px 8px;
+            font-size: 12px;
             border: 1.5px solid #e2e8f0;
             border-radius: 8px;
-            width: 140px;
+            width: 120px;
             outline: none;
             background: #fff;
         }
@@ -515,25 +539,24 @@
             box-shadow: 0 0 0 3px rgba(42, 90, 154, 0.1);
         }
         .selected-item .s-special-input .hint {
-            font-size: 13px;
+            font-size: 12px;
             color: #4a5a72;
         }
         .selected-item .s-special-input .result {
             font-weight: 700;
             color: #1a3a6b;
-            font-size: 14px;
+            font-size: 13px;
         }
         .selected-empty {
             color: #bcc9db;
-            font-size: 14px;
+            font-size: 13px;
             text-align: center;
-            padding: 20px 0;
+            padding: 16px 0;
         }
-
         /* ===== 营销助手价格选择 ===== */
         .marketing-price-select {
-            padding: 4px 8px;
-            font-size: 12px;
+            padding: 3px 6px;
+            font-size: 11px;
             border: 1.5px solid #e2e8f0;
             border-radius: 8px;
             background: #f8fafc;
@@ -542,30 +565,33 @@
             font-weight: 500;
             appearance: none;
             -webkit-appearance: none;
-            padding-right: 24px;
+            padding-right: 20px;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%238895aa' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
             background-position: right 6px center;
             cursor: pointer;
-            min-width: 80px;
+            min-width: 70px;
         }
         .marketing-price-select:focus {
             border-color: #2a5a9a;
             background: #fff;
         }
-
-        /* 区总模式切换 - 两个并列按钮 */
+        .marketing-price-select.market-mode {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
         .region-toggle {
             display: flex;
-            gap: 4px;
+            gap: 3px;
             background: #f0f2f5;
             border-radius: 8px;
-            padding: 3px;
+            padding: 2px;
             flex-shrink: 0;
         }
         .region-toggle .rt-btn {
-            padding: 3px 12px;
-            font-size: 11px;
+            padding: 2px 10px;
+            font-size: 10px;
             font-weight: 600;
             border: none;
             border-radius: 6px;
@@ -587,12 +613,11 @@
             background: #e8f5e9;
             color: #1a5a2a;
         }
-
         .price-tag {
-            font-size: 11px;
+            font-size: 10px;
             color: #8895aa;
             background: #f0f2f5;
-            padding: 2px 8px;
+            padding: 2px 6px;
             border-radius: 4px;
             white-space: nowrap;
         }
@@ -600,17 +625,15 @@
             background: #e8f5e9;
             color: #1a5a2a;
         }
-
         .remark-tag-btn {
-            font-size: 12px;
+            font-size: 11px;
             color: #2a5a9a;
             background: none;
             border: none;
             cursor: pointer;
-            padding: 0 4px;
+            padding: 0 3px;
             text-decoration: underline dotted;
         }
-
         .remark-popup {
             display: none;
             position: fixed;
@@ -630,128 +653,404 @@
         .remark-popup .popup-content {
             background: #fff;
             border-radius: 16px;
-            padding: 24px 20px 20px;
-            max-width: 400px;
+            padding: 20px 18px 18px;
+            max-width: 380px;
             width: 100%;
             max-height: 70vh;
             overflow-y: auto;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
         }
         .remark-popup .popup-title {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 700;
             color: #1a3a6b;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
         .remark-popup .popup-body {
-            font-size: 14px;
+            font-size: 13px;
             color: #4a5a72;
             line-height: 1.7;
-            padding: 8px 0 12px;
+            padding: 6px 0 10px;
         }
         .remark-popup .popup-close {
             width: 100%;
-            padding: 10px;
+            padding: 8px;
             border: none;
             border-radius: 10px;
             background: #1a3a6b;
             color: #fff;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 600;
             cursor: pointer;
         }
         .remark-popup .popup-close:hover {
             background: #2a5a9a;
         }
-
         .result-box {
             background: linear-gradient(145deg, #e8f0fe, #dce6f5);
             border-radius: 14px;
-            padding: 18px 20px;
+            padding: 12px 14px;
             margin-top: 4px;
         }
         .result-row {
             display: flex;
             justify-content: space-between;
             align-items: baseline;
-            padding: 4px 0;
+            padding: 3px 0;
         }
         .result-row .label {
-            font-size: 14px;
+            font-size: 13px;
             color: #4a5a72;
         }
         .result-row .value {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 700;
             color: #1a3a6b;
         }
         .result-total {
             border-top: 2px solid #bcc9db;
-            padding-top: 10px;
-            margin-top: 6px;
+            padding-top: 8px;
+            margin-top: 4px;
         }
         .result-total .value {
-            font-size: 28px;
+            font-size: 26px;
             color: #0b2b4a;
         }
         .result-total .value small {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 400;
             color: #4a5a72;
         }
         #selectedRemarks {
-            margin-top: 12px;
-            font-size: 13px;
+            margin-top: 10px;
+            font-size: 12px;
             color: #4a5a72;
             border-top: 1px dashed #cddae9;
-            padding-top: 12px;
+            padding-top: 10px;
             line-height: 1.7;
         }
         #selectedRemarks strong {
             color: #1a3a6b;
         }
-
-        .save-area {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-top: 12px;
-        }
-        .save-area button {
-            flex: 1;
-            min-width: 80px;
-            padding: 10px 14px;
-            border: none;
+        .group-info-area {
+            display: none;
+            margin-top: 6px;
+            padding: 8px 12px;
+            background: #f0f7ff;
             border-radius: 10px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
+            border: 1px solid #d4e2f0;
         }
-        .save-area .btn-save {
+        .group-info-area.show {
+            display: block;
+        }
+        .group-info-area .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 2px 0;
+            font-size: 12px;
+        }
+        .group-info-area .info-row .label {
+            color: #4a5a72;
+        }
+        .group-info-area .info-row .value {
+            font-weight: 600;
+            color: #1a3a6b;
+        }
+        .batch-toggle {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 3px 0;
+        }
+        .batch-toggle input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #2a5a9a;
+            cursor: pointer;
+        }
+        .batch-toggle label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #1a3a6b;
+            cursor: pointer;
+        }
+        .batch-toggle .toggle-hint {
+            font-size: 10px;
+            color: #8895aa;
+            font-weight: 400;
+        }
+        .batch-collapse {
+            display: none;
+            margin-top: 8px;
+            padding: 10px 12px;
+            background: #f5f9ff;
+            border-radius: 10px;
+            border: 1px solid #d4e2f0;
+        }
+        .batch-collapse.open {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+        @keyframes slideDown {
+            0% {
+                opacity: 0;
+                transform: translateY(-8px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .batch-collapse .batch-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #1a3a6b;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .batch-collapse .batch-title .batch-badge {
+            font-size: 10px;
             background: #1a3a6b;
             color: #fff;
+            padding: 0 8px;
+            border-radius: 12px;
+            font-weight: 400;
         }
-        .save-area .btn-save:hover {
+        .batch-collapse .batch-row {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .batch-collapse .batch-row .batch-group {
+            flex: 1;
+            min-width: 70px;
+        }
+        .batch-collapse .batch-row .batch-group label {
+            font-size: 10px;
+            font-weight: 500;
+            color: #4a5a72;
+            display: block;
+            margin-bottom: 2px;
+        }
+        .batch-collapse .batch-row .batch-group input,
+        .batch-collapse .batch-row .batch-group select {
+            width: 100%;
+            padding: 4px 8px;
+            font-size: 12px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 8px;
+            background: #fff;
+            color: #1a2332;
+            outline: none;
+            font-weight: 500;
+            transition: border 0.2s;
+        }
+        .batch-collapse .batch-row .batch-group input:focus,
+        .batch-collapse .batch-row .batch-group select:focus {
+            border-color: #2a5a9a;
+        }
+        .batch-collapse .batch-row .batch-group input:disabled {
+            background: #f0f2f5;
+            color: #8895aa;
+        }
+        .batch-collapse .batch-row .batch-group select {
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238895aa' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 8px center;
+            padding-right: 26px;
+        }
+        .batch-collapse .batch-result {
+            margin-top: 6px;
+            padding: 6px 10px;
+            background: #e8f0fe;
+            border-radius: 8px;
+            font-size: 11px;
+            color: #1a3a6b;
+            display: none;
+        }
+        .batch-collapse .batch-result.show {
+            display: block;
+        }
+        .batch-collapse .batch-result .br-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 2px 0;
+        }
+        .batch-collapse .batch-result .br-row .br-label {
+            color: #4a5a72;
+        }
+        .batch-collapse .batch-result .br-row .br-value {
+            font-weight: 600;
+        }
+        .group-remarks {
+            margin-top: 8px;
+            padding: 8px 12px;
+            background: #fff8e1;
+            border-radius: 10px;
+            border: 1px solid #ffecb3;
+            font-size: 11px;
+            color: #5d4037;
+            line-height: 1.7;
+        }
+        .group-remarks .remark-title {
+            font-weight: 600;
+            color: #1a3a6b;
+            margin-bottom: 3px;
+            font-size: 12px;
+        }
+        .group-remarks .remark-item {
+            padding: 2px 0 2px 14px;
+            position: relative;
+        }
+        .group-remarks .remark-item::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #2a5a9a;
+            font-weight: 700;
+        }
+        .group-remarks .remark-item .highlight {
+            color: #1a3a6b;
+            font-weight: 600;
+        }
+        .floating-actions {
+            position: fixed;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 500;
+            align-items: center;
+            pointer-events: none;
+        }
+        .floating-actions .fab {
+            pointer-events: auto;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(26, 58, 107, 0.88);
+            backdrop-filter: blur(6px);
+            color: #fff;
+            font-size: 10px;
+            font-weight: 500;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            line-height: 1.2;
+            padding: 3px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            user-select: none;
+        }
+        .floating-actions .fab .fab-icon {
+            font-size: 16px;
+            display: block;
+            margin-bottom: 1px;
+        }
+        .floating-actions .fab .fab-label {
+            font-size: 7px;
+            opacity: 0.9;
+            white-space: nowrap;
+        }
+        .floating-actions .fab:hover {
+            transform: scale(1.08);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+        }
+        .floating-actions .fab:active {
+            transform: scale(0.92);
+        }
+        .floating-actions .fab.fab-save {
+            background: #1a3a6b;
+        }
+        .floating-actions .fab.fab-preview {
             background: #2a5a9a;
         }
-        .save-area .btn-preview {
-            background: #e8f0fe;
-            color: #1a3a6b;
-            border: 1.5px solid #1a3a6b;
+        .floating-actions .fab.fab-copy {
+            background: #4a6a8a;
         }
-        .save-area .btn-preview:hover {
-            background: #dce6f5;
+        .floating-actions .fab.fab-top {
+            background: rgba(26, 58, 107, 0.75);
         }
-        .save-area .btn-copy {
-            background: #f0f2f5;
-            color: #4a5a72;
-            border: 1.5px solid #d0d4dc;
+        .floating-actions .fab.fab-reset {
+            background: rgba(200, 60, 50, 0.85);
         }
-        .save-area .btn-copy:hover {
-            background: #e5e8ee;
+        @media (max-width: 480px) {
+            .floating-actions .fab {
+                width: 38px;
+                height: 38px;
+                font-size: 9px;
+            }
+            .floating-actions .fab .fab-icon {
+                font-size: 14px;
+            }
+            .floating-actions .fab .fab-label {
+                font-size: 6px;
+            }
+            .floating-actions {
+                right: 4px;
+                gap: 6px;
+            }
+            .container {
+                padding: 0 2px;
+            }
+            .filter-row {
+                flex-direction: column;
+                gap: 4px;
+            }
+            .hotel-query-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .hotel-query-row .query-btn {
+                width: 100%;
+                height: 38px;
+            }
+            .search-add-area {
+                flex-direction: column;
+            }
+            .search-add-area .search-input-wrap {
+                min-width: auto;
+            }
+            .selected-item {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .selected-item .s-right {
+                justify-content: flex-start;
+                flex-wrap: wrap;
+            }
+            .selected-item .s-total {
+                text-align: left;
+            }
+            .result-total .value {
+                font-size: 22px;
+            }
+            .preview-popup .preview-actions {
+                flex-direction: column;
+            }
+            .batch-collapse .batch-row {
+                flex-direction: column;
+            }
+            .region-toggle {
+                flex-wrap: wrap;
+            }
+            .category-toggle .cat-btn {
+                font-size: 11px;
+                padding: 3px 8px;
+                min-width: 44px;
+            }
         }
-
         .preview-popup {
             display: none;
             position: fixed;
@@ -771,32 +1070,32 @@
         .preview-popup .preview-content {
             background: #fff;
             border-radius: 16px;
-            padding: 24px 20px 20px;
-            max-width: 500px;
+            padding: 20px 18px 18px;
+            max-width: 460px;
             width: 100%;
             max-height: 80vh;
             overflow-y: auto;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
         }
         .preview-popup .preview-title {
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 700;
             color: #1a3a6b;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             text-align: center;
         }
         .preview-popup .preview-body {
-            font-size: 14px;
+            font-size: 13px;
             color: #1a2332;
             line-height: 1.8;
-            padding: 12px 0;
+            padding: 10px 0;
             border-top: 1px solid #e8ecf2;
             border-bottom: 1px solid #e8ecf2;
         }
         .preview-popup .preview-body .item {
             display: flex;
             justify-content: space-between;
-            padding: 4px 0;
+            padding: 3px 0;
             border-bottom: 1px dashed #f0f2f5;
         }
         .preview-popup .preview-body .item:last-child {
@@ -804,23 +1103,23 @@
         }
         .preview-popup .preview-body .total-row {
             font-weight: 700;
-            font-size: 16px;
+            font-size: 15px;
             color: #1a3a6b;
             border-top: 2px solid #1a3a6b;
-            padding-top: 8px;
-            margin-top: 4px;
+            padding-top: 6px;
+            margin-top: 3px;
         }
         .preview-popup .preview-actions {
             display: flex;
-            gap: 8px;
-            margin-top: 14px;
+            gap: 6px;
+            margin-top: 12px;
         }
         .preview-popup .preview-actions button {
             flex: 1;
-            padding: 10px;
+            padding: 8px;
             border: none;
             border-radius: 10px;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
@@ -847,255 +1146,69 @@
         .preview-popup .preview-actions .btn-copy-json:hover {
             background: #dce6f5;
         }
-
-        .group-info-area {
-            display: none;
+        .custom-product-area {
             margin-top: 8px;
-            padding: 10px 14px;
-            background: #f0f7ff;
-            border-radius: 10px;
-            border: 1px solid #d4e2f0;
+            padding-top: 8px;
+            border-top: 1px dashed #e2e8f0;
         }
-        .group-info-area.show {
-            display: block;
-        }
-        .group-info-area .info-row {
+        .custom-product-area .custom-row {
             display: flex;
-            justify-content: space-between;
-            padding: 3px 0;
-            font-size: 13px;
-        }
-        .group-info-area .info-row .label {
-            color: #4a5a72;
-        }
-        .group-info-area .info-row .value {
-            font-weight: 600;
-            color: #1a3a6b;
-        }
-
-        .batch-toggle {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 4px 0;
-        }
-        .batch-toggle input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            accent-color: #2a5a9a;
-            cursor: pointer;
-        }
-        .batch-toggle label {
-            font-size: 13px;
-            font-weight: 600;
-            color: #1a3a6b;
-            cursor: pointer;
-        }
-        .batch-toggle .toggle-hint {
-            font-size: 11px;
-            color: #8895aa;
-            font-weight: 400;
-        }
-
-        .batch-collapse {
-            display: none;
-            margin-top: 10px;
-            padding: 12px 14px;
-            background: #f5f9ff;
-            border-radius: 10px;
-            border: 1px solid #d4e2f0;
-        }
-        .batch-collapse.open {
-            display: block;
-            animation: slideDown 0.3s ease;
-        }
-        @keyframes slideDown {
-            0% {
-                opacity: 0;
-                transform: translateY(-8px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .batch-collapse .batch-title {
-            font-size: 13px;
-            font-weight: 600;
-            color: #1a3a6b;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
             gap: 6px;
-        }
-        .batch-collapse .batch-title .batch-badge {
-            font-size: 11px;
-            background: #1a3a6b;
-            color: #fff;
-            padding: 0 10px;
-            border-radius: 12px;
-            font-weight: 400;
-        }
-        .batch-collapse .batch-row {
-            display: flex;
-            gap: 8px;
+            align-items: center;
             flex-wrap: wrap;
+            margin-bottom: 4px;
         }
-        .batch-collapse .batch-row .batch-group {
-            flex: 1;
-            min-width: 80px;
-        }
-        .batch-collapse .batch-row .batch-group label {
-            font-size: 11px;
-            font-weight: 500;
-            color: #4a5a72;
-            display: block;
-            margin-bottom: 2px;
-        }
-        .batch-collapse .batch-row .batch-group input,
-        .batch-collapse .batch-row .batch-group select {
-            width: 100%;
-            padding: 6px 10px;
-            font-size: 13px;
+        .custom-product-area .custom-row input {
+            padding: 4px 8px;
+            font-size: 12px;
             border: 1.5px solid #e2e8f0;
             border-radius: 8px;
-            background: #fff;
-            color: #1a2332;
             outline: none;
-            font-weight: 500;
-            transition: border 0.2s;
+            background: #f8fafc;
         }
-        .batch-collapse .batch-row .batch-group input:focus,
-        .batch-collapse .batch-row .batch-group select:focus {
+        .custom-product-area .custom-row input:focus {
             border-color: #2a5a9a;
+            background: #fff;
         }
-        .batch-collapse .batch-row .batch-group input:disabled {
-            background: #f0f2f5;
-            color: #8895aa;
+        .custom-product-area .custom-row .custom-name {
+            flex: 2;
+            min-width: 100px;
         }
-        .batch-collapse .batch-row .batch-group select {
-            appearance: none;
-            -webkit-appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238895aa' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 10px center;
-            padding-right: 30px;
+        .custom-product-area .custom-row .custom-price {
+            flex: 1;
+            min-width: 80px;
+            width: 100px;
         }
-
-        .batch-collapse .batch-result {
-            margin-top: 8px;
-            padding: 8px 12px;
-            background: #e8f0fe;
+        .custom-product-area .custom-row .custom-add-btn {
+            padding: 4px 14px;
+            font-size: 12px;
+            font-weight: 600;
+            border: none;
             border-radius: 8px;
-            font-size: 12px;
-            color: #1a3a6b;
-            display: none;
+            cursor: pointer;
+            background: #1a3a6b;
+            color: #fff;
+            white-space: nowrap;
+            transition: background 0.2s;
+            height: 32px;
         }
-        .batch-collapse .batch-result.show {
-            display: block;
+        .custom-product-area .custom-row .custom-add-btn:hover {
+            background: #2a5a9a;
         }
-        .batch-collapse .batch-result .br-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 2px 0;
+        .custom-product-area .custom-row .custom-add-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
-        .batch-collapse .batch-result .br-row .br-label {
-            color: #4a5a72;
-        }
-        .batch-collapse .batch-result .br-row .br-value {
-            font-weight: 600;
-        }
-
-        .group-remarks {
-            margin-top: 10px;
-            padding: 10px 14px;
-            background: #fff8e1;
-            border-radius: 10px;
-            border: 1px solid #ffecb3;
-            font-size: 12px;
-            color: #5d4037;
-            line-height: 1.7;
-        }
-        .group-remarks .remark-title {
-            font-weight: 600;
-            color: #1a3a6b;
-            margin-bottom: 4px;
-            font-size: 13px;
-        }
-        .group-remarks .remark-item {
-            padding: 2px 0 2px 16px;
-            position: relative;
-        }
-        .group-remarks .remark-item::before {
-            content: "•";
-            position: absolute;
-            left: 0;
-            color: #2a5a9a;
-            font-weight: 700;
-        }
-        .group-remarks .remark-item .highlight {
-            color: #1a3a6b;
-            font-weight: 600;
-        }
-
-        @media (max-width: 450px) {
-            .filter-row {
-                flex-direction: column;
-                gap: 6px;
-            }
-            .hotel-query-row {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .hotel-query-row .query-btn {
-                width: 100%;
-                height: 42px;
-            }
-            .search-add-area {
-                flex-direction: column;
-            }
-            .search-add-area .search-input-wrap {
-                min-width: auto;
-            }
-            .search-add-area .category-select {
-                min-width: auto;
-            }
-            .selected-item {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .selected-item .s-right {
-                justify-content: flex-start;
-                flex-wrap: wrap;
-            }
-            .selected-item .s-total {
-                text-align: left;
-            }
-            .result-total .value {
-                font-size: 24px;
-            }
-            .save-area button {
-                min-width: 60px;
-                font-size: 12px;
-                padding: 8px 10px;
-            }
-            .preview-popup .preview-actions {
-                flex-direction: column;
-            }
-            .batch-collapse .batch-row {
-                flex-direction: column;
-            }
-            .region-toggle {
-                flex-wrap: wrap;
-            }
+        .custom-product-area .custom-hint {
+            font-size: 11px;
+            color: #8895aa;
+            margin-top: 4px;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <!-- 头部 -->
+    <div class="container" id="appContainer">
         <div class="header">
             <h1>🏨 华客产品报价计算器</h1>
             <p>搜索添加 · 支持多年签约 · 导出 xlsx</p>
@@ -1104,14 +1217,13 @@
         <!-- ===== 报价条件 ===== -->
         <div class="card">
             <div class="card-title">📋 报价条件</div>
-
             <div class="filter-row">
                 <div class="filter-group">
                     <label>价格权限</label>
                     <select id="priceLevel">
                         <option value="market">市场标准价</option>
                         <option value="sales">销售权限价</option>
-                        <option value="region">区总折扣价</option>
+                        <option value="region">区总权限价</option>
                     </select>
                 </div>
                 <div class="filter-group">
@@ -1122,7 +1234,6 @@
                     </select>
                 </div>
             </div>
-
             <div class="filter-row">
                 <div class="filter-group hidden-group" id="groupScaleGroup">
                     <label>集团规模</label>
@@ -1139,20 +1250,20 @@
         <!-- ===== 酒店/集团信息 ===== -->
         <div class="card" id="singleHotelCard">
             <div class="card-title">🏨 酒店信息</div>
-            <div class="filter-row" style="margin-top:4px;">
+            <div class="filter-row" style="margin-top:2px;">
                 <div class="filter-group" style="flex:1;">
                     <label>🏨 酒店名称</label>
                     <div class="hotel-query-row">
                         <div class="query-input-wrap">
-                            <input type="text" id="hotelName" placeholder="输入携程酒店名称，如：开平潭江半岛酒店" style="font-weight:400;">
+                            <input type="text" id="hotelName" placeholder="输入携程酒店名称" style="font-weight:400;">
                         </div>
                         <button class="query-btn" id="hotelQueryBtn" onclick="queryHotel()">🔍 查询</button>
                     </div>
-                    <div style="font-size:12px;color:#8895aa;margin-top:4px;">💡 输入酒店名称点击查询，自动获取携程ID和房间数</div>
+                    <div style="font-size:11px;color:#8895aa;margin-top:3px;">💡 自动获取携程ID和房间数</div>
                     <div class="query-tip" id="queryTip"></div>
                 </div>
             </div>
-            <div class="filter-row" style="margin-top:4px;">
+            <div class="filter-row" style="margin-top:2px;">
                 <div class="filter-group" style="flex:1.2;">
                     <label>🏷️ 酒店ID</label>
                     <input type="text" id="hotelId" placeholder="如 12345678" style="font-weight:400;">
@@ -1172,13 +1283,13 @@
         <!-- ===== 集团信息 ===== -->
         <div class="card" id="groupHotelCard" style="display:none;">
             <div class="card-title">🏛️ 集团信息</div>
-            <div class="filter-row" style="margin-top:4px;">
+            <div class="filter-row" style="margin-top:2px;">
                 <div class="filter-group">
                     <label>🏛️ 集团名称 <span class="required">*</span></label>
                     <input type="text" id="groupName" placeholder="如：华住集团" style="font-weight:400;">
                 </div>
             </div>
-            <div class="filter-row" style="margin-top:4px;">
+            <div class="filter-row" style="margin-top:2px;">
                 <div class="filter-group" style="flex:1.2;">
                     <label>🏢 本次合作新增门店数 <span class="required">*</span> <span class="range-hint" id="storeRangeHint">(5-29)</span></label>
                     <input type="number" id="groupStoreCount" placeholder="如 10" min="1" style="font-weight:400;">
@@ -1190,9 +1301,7 @@
                     <div class="error-msg" id="groupRoomError">⚠️ 请填写平均房间数</div>
                 </div>
             </div>
-
-            <!-- 批次合作 -->
-            <div style="margin-top:10px;padding-top:10px;border-top:1px solid #e8ecf2;">
+            <div style="margin-top:8px;padding-top:8px;border-top:1px solid #e8ecf2;">
                 <div class="batch-toggle">
                     <input type="checkbox" id="batchEnabled">
                     <label for="batchEnabled">📦 启用批次合作</label>
@@ -1210,15 +1319,13 @@
                         <div class="br-row"><span class="br-label">本次新增</span><span class="br-value" id="brNew">0 家</span></div>
                         <div class="br-row"><span class="br-label">累计总数</span><span class="br-value" id="brTotal">0 家</span></div>
                         <div class="br-row"><span class="br-label">适用档位</span><span class="br-value" id="brScale">-</span></div>
-                        <div class="br-row" style="border-top:1px dashed #cddae9;padding-top:4px;"><span class="br-label">📌 报价说明</span><span class="br-value" id="brNote" style="font-weight:400;font-size:11px;color:#4a5a72;">-</span></div>
+                        <div class="br-row" style="border-top:1px dashed #cddae9;padding-top:3px;"><span class="br-label">📌 报价说明</span><span class="br-value" id="brNote" style="font-weight:400;font-size:10px;color:#4a5a72;">-</span></div>
                     </div>
                 </div>
             </div>
-
             <div class="group-info-area" id="groupInfoArea">
                 <div class="info-row"><span class="label">📊 预估总房间数</span><span class="value" id="groupTotalRoom">-</span></div>
             </div>
-
             <div class="group-remarks">
                 <div class="remark-title">📌 集团报价说明</div>
                 <div class="remark-item">如集团分批次合作，则按照阶梯报价：举例1个集团首批合作酒店数25家，第二批合作10家，则合作的前29家按照第一档位即<span class="highlight">5-29家</span>的报价标准，30-35家的酒店以第二档位即<span class="highlight">30-99家</span>的报价标准</div>
@@ -1234,18 +1341,25 @@
                 🔍 添加产品
                 <span class="badge" id="resultCount">0 个可添加</span>
             </div>
-            <div class="search-add-area">
+            <div class="category-toggle" id="categoryToggle">
+                <button class="cat-btn active" data-cat="main">⭐ 主产品</button>
+                <button class="cat-btn" data-cat="addon">➕ 增值产品</button>
+                <button class="cat-btn" data-cat="all">📂 全部</button>
+                <button class="cat-btn" data-cat="custom">✏️ 自定义</button>
+            </div>
+            <div class="search-add-area" id="searchAddArea">
                 <div class="search-input-wrap">
                     <span class="icon">🔍</span>
                     <input type="text" id="searchInput" placeholder="输入产品名称搜索..." autocomplete="off">
                 </div>
-                <div class="category-select">
-                    <select id="categoryFilter">
-                        <option value="main">⭐ 主产品</option>
-                        <option value="addon">➕ 增值产品</option>
-                        <option value="all">📂 全部</option>
-                    </select>
+            </div>
+            <div class="custom-product-area" id="customProductArea" style="display:none;">
+                <div class="custom-row">
+                    <input class="custom-name" id="customName" placeholder="产品名称" style="font-weight:400;">
+                    <input class="custom-price" id="customPrice" type="number" placeholder="单价(元)" min="0" style="font-weight:400;">
+                    <button class="custom-add-btn" id="customAddBtn" onclick="addCustomProduct()">➕ 添加</button>
                 </div>
+                <div class="custom-hint">💡 自定义产品将按当前选中的价格权限计算，支持多年签约</div>
             </div>
             <div class="search-results" id="searchResults"></div>
         </div>
@@ -1261,7 +1375,7 @@
             </div>
         </div>
 
-        <!-- ===== 汇总 + 保存 ===== -->
+        <!-- ===== 汇总 ===== -->
         <div class="result-box" id="resultBox">
             <div class="result-row">
                 <span class="label">已选产品合计（年费）</span>
@@ -1272,12 +1386,31 @@
                 <span class="value" id="totalDisplay">¥0 <small>/ 合同期</small></span>
             </div>
             <div id="selectedRemarks"></div>
-            <div class="save-area">
-                <button class="btn-save" onclick="saveQuote()">💾 保存报价</button>
-                <button class="btn-preview" onclick="previewQuote()">👁️ 预览</button>
-                <button class="btn-copy" onclick="copyQuoteSummary()">📋 复制摘要</button>
-            </div>
         </div>
+    </div>
+
+    <!-- ===== 悬浮按钮组 ===== -->
+    <div class="floating-actions" id="floatingActions">
+        <button class="fab fab-save" onclick="saveQuote()" title="保存报价 (导出XLSX)">
+            <span class="fab-icon">💾</span>
+            <span class="fab-label">保存</span>
+        </button>
+        <button class="fab fab-preview" onclick="previewQuote()" title="预览报价单">
+            <span class="fab-icon">👁️</span>
+            <span class="fab-label">预览</span>
+        </button>
+        <button class="fab fab-copy" onclick="copyQuoteSummary()" title="复制报价摘要">
+            <span class="fab-icon">📋</span>
+            <span class="fab-label">复制</span>
+        </button>
+        <button class="fab fab-top" onclick="scrollToTop()" title="回到页面顶部">
+            <span class="fab-icon">⬆</span>
+            <span class="fab-label">顶部</span>
+        </button>
+        <button class="fab fab-reset" onclick="resetAll()" title="一键重置所有数据">
+            <span class="fab-icon">🔄</span>
+            <span class="fab-label">重置</span>
+        </button>
     </div>
 
     <!-- 备注弹窗 -->
@@ -1304,9 +1437,8 @@
 
     <script>
         // ================================================================
-        //  📋 产品维护区
+        //  房间档位
         // ================================================================
-
         const ROOM_RANGES = [
             { label: '≤80间', min: 0, max: 80 },
             { label: '81-150间', min: 81, max: 150 },
@@ -1316,78 +1448,145 @@
             { label: '≥801间', min: 801, max: 99999 }
         ];
 
+        function getRoomIndex(roomCount) {
+            if (roomCount < 1) return -1;
+            return ROOM_RANGES.findIndex(r => roomCount >= r.min && roomCount <= r.max);
+        }
+
+        // ================================================================
+        //  价格辅助函数
+        // ================================================================
         function p6(market, sales, region) {
             return { market: market, sales: sales, region: region };
         }
 
         // ================================================================
-        //  营销助手独立价格配置（不含市场标准价）
+        //  营销助手价格配置（根据最新需求）
         // ================================================================
-        const MARKETING_PRICES = {
-            'marketing_std': {
-                new_customer: 9999,
-                existing_customer: 6999,
-                group: 6099
-            },
-            'marketing_ai': {
-                new_customer: 12999,
-                existing_customer: 9999,
-                group: 8799
-            }
+        // 标准版 ST
+        const MARKETING_STD = {
+            market: 13999, // 市场标准价
+            sales_new: 9999, // 销售-新客标准价
+            sales_existing: 6999, // 销售-熟客优享价
+            sales_group: 6099, // 销售-集团优享价
+            region_new: 9199, // 区总约92折-新客标准价
+            region_existing: 6399, // 区总约92折-熟客优享价
+            region_group: 5599 // 区总约92折-集团优享价
         };
 
-        const DISCOUNT_92 = 0.92;
+        // 智能版 AI
+        const MARKETING_AI = {
+            market: 18999, // 市场标准价
+            sales_new: 12999, // 销售-新客标准价
+            sales_existing: 9999, // 销售-熟客优享价
+            sales_group: 8799, // 销售-集团优享价
+            region_new: 11899, // 区总约92折-新客标准价
+            region_existing: 9199, // 区总约92折-熟客优享价
+            region_group: 7999 // 区总约92折-集团优享价
+        };
+
+        // 销售权限价-赠送月份（与销售权限价相同）
+        // 区总权限价-赠送月份（与销售权限价相同）
 
         function isMarketingProduct(productId) {
             return productId === 'marketing_std' || productId === 'marketing_ai';
         }
 
-        function getBasePrice(productId, baseType) {
-            const prices = MARKETING_PRICES[productId];
-            if (!prices) return 0;
-            return prices[baseType] || 0;
+        function getMarketingPrice(productId, priceLevel, customerType, regionMode, baseType) {
+            const isStd = productId === 'marketing_std';
+            const prices = isStd ? MARKETING_STD : MARKETING_AI;
+
+            // 市场标准价
+            if (priceLevel === 'market') {
+                return prices.market || 0;
+            }
+
+            // 销售权限价
+            if (priceLevel === 'sales') {
+                // 赠送月份模式（实际上销售权限价不变）
+                if (regionMode === 'month_gift') {
+                    if (customerType === 'group') return prices.sales_group || 0;
+                    if (baseType === 'existing') return prices.sales_existing || 0;
+                    return prices.sales_new || 0;
+                }
+                // 正常销售权限价
+                if (customerType === 'group') return prices.sales_group || 0;
+                if (baseType === 'existing') return prices.sales_existing || 0;
+                return prices.sales_new || 0;
+            }
+
+            // 区总权限价
+            if (priceLevel === 'region') {
+                // 约92折优惠
+                if (regionMode === 'discount') {
+                    if (customerType === 'group') return prices.region_group || 0;
+                    if (baseType === 'existing') return prices.region_existing || 0;
+                    return prices.region_new || 0;
+                }
+                // 赠送月份 - 使用销售权限价
+                if (customerType === 'group') return prices.sales_group || 0;
+                if (baseType === 'existing') return prices.sales_existing || 0;
+                return prices.sales_new || 0;
+            }
+
+            return 0;
         }
 
-        function getMarketingFinalPrice(productId, baseType, regionMode) {
-            const basePrice = getBasePrice(productId, baseType);
-            // regionMode: 'discount' = 92折, 'month_gift' = 赠送月份（直接用销售权限价）
-            if (regionMode === 'discount') {
-                return Math.round(basePrice * DISCOUNT_92);
-            }
-            return basePrice;
-        }
+        function getMarketingLabel(productId, baseType, regionMode, priceLevel, customerType) {
+            const isStd = productId === 'marketing_std';
+            const name = isStd ? '标准版' : '智能版';
 
-        function getMarketingLabel(baseType, regionMode) {
-            const labels = {
-                'new_customer': '新客标准价',
-                'existing_customer': '熟客优享价',
-                'group': '集团优享价'
-            };
-            let label = labels[baseType] || baseType;
-            if (regionMode === 'discount') {
-                label = '92折(' + label + ')';
-            } else if (regionMode === 'month_gift') {
-                label = '赠送月份(' + label + ')';
+            if (priceLevel === 'market') {
+                return name + ' (市场标准价)';
             }
-            return label;
+            if (priceLevel === 'sales') {
+                if (regionMode === 'month_gift') {
+                    if (customerType === 'group') return name + ' (销售-赠送月份-集团优享价)';
+                    if (baseType === 'existing') return name + ' (销售-赠送月份-熟客优享价)';
+                    return name + ' (销售-赠送月份-新客标准价)';
+                }
+                if (customerType === 'group') return name + ' (销售-集团优享价)';
+                if (baseType === 'existing') return name + ' (销售-熟客优享价)';
+                return name + ' (销售-新客标准价)';
+            }
+            if (priceLevel === 'region') {
+                if (regionMode === 'discount') {
+                    if (customerType === 'group') return name + ' (区总约92折-集团优享价)';
+                    if (baseType === 'existing') return name + ' (区总约92折-熟客优享价)';
+                    return name + ' (区总约92折-新客标准价)';
+                }
+                if (customerType === 'group') return name + ' (区总赠送月份-集团优享价)';
+                if (baseType === 'existing') return name + ' (区总赠送月份-熟客优享价)';
+                return name + ' (区总赠送月份-新客标准价)';
+            }
+            return name;
         }
 
         function getBasePriceOptions(customerType) {
             const isGroup = customerType === 'group';
             let options = [
-                { value: 'new_customer', label: '新客标准价' },
-                { value: 'existing_customer', label: '熟客优享价' }
+                { value: 'new', label: '新客标准价' },
+                { value: 'existing', label: '熟客优享价' }
             ];
             if (isGroup) {
-                options.push({ value: 'group', label: '集团优享价' });
+                options = [
+                    { value: 'new', label: '新客标准价' },
+                    { value: 'existing', label: '集团优享价' }
+                ];
             }
             return options;
         }
 
-        // ================================================================
-        //  产品数据
-        // ================================================================
+        function getDefaultMarketingConfig() {
+            return {
+                baseType: 'new',
+                regionMode: null
+            };
+        }
 
+        // ================================================================
+        //  产品数据 - 根据Excel完整录入（简化版，保留核心产品）
+        // ================================================================
         const MAIN_SINGLE = [{
             id: 'hqm',
             name: '住前-质检（HQM）',
@@ -1440,7 +1639,7 @@
             name: 'AI',
             prices: p6([14888, 17288, 22388, 31687.74, 44388, 60588], [12588, 14688, 18988, 26888, 37688, 51388],
                 [10388, 11988, 15588, 22088, 30888, 42188]),
-            remark: 'AI仅包含标准产品，详细包含：\n1）含机器人应答功能、下默认工单功能\n2）含默认的100个问答\n3）含5种AI工单类型\n4）含中文、内线场景',
+            remark: 'AI仅包含标准产品',
             maxYears: 3,
             type: 'main'
         }, {
@@ -1466,26 +1665,16 @@
             name: '景区AI',
             prices: p6([52288, 52288, 52288, 52288, 52288, 52288], [44388, 44388, 44388, 44388, 44388, 44388],
                 [37688, 37688, 37688, 37688, 37688, 37688]),
-            remark: 'AI仅包含标准产品，详细包含：\n1）含机器人应答功能\n2）可配置100个问答\n3）含中文场景\n4）如景区内包含酒店需分别报价',
+            remark: '景区AI标准产品',
             maxYears: 3,
             type: 'main'
-        }, {
-            id: 'scenic_ops',
-            name: '景区AI-运营服务',
-            prices: p6([0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]),
-            remark: '如客户有额外的运营服务要求，可一单一议，按照具体目标和服务时限评估后报价',
-            maxYears: 1,
-            type: 'addon',
-            isSpecial: true,
-            specialLabel: '运营服务评估金额',
-            specialCalc: (val) => Math.round(val)
         }];
 
         const BI_PRODUCTS = [{
             id: 'bi_self_cem',
             name: 'BI看板-自营酒店接入（已合作CEM）',
             prices: p6([0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]),
-            remark: '按接入自营酒店总金额的20%收取，需填写下方总金额自动计算',
+            remark: '按接入自营酒店总金额的20%收取',
             maxYears: 3,
             type: 'main',
             isSpecial: true,
@@ -1505,12 +1694,11 @@
             name: 'BI看板-竞对集团接入',
             prices: p6([50000, 50000, 50000, 50000, 50000, 50000], [30000, 30000, 30000, 30000, 30000, 30000],
                 [15000, 15000, 15000, 15000, 15000, 15000]),
-            remark: '可默认赠送3个竞对集团；超出后按此收费',
+            remark: '可默认赠送3个竞对集团',
             maxYears: 1,
             type: 'main'
         }];
 
-        // 智能营销助手
         const MARKETING_PRODUCTS = [{
             id: 'marketing_std',
             name: '智能营销助手-标准版',
@@ -1518,7 +1706,8 @@
             remark: '提供本酒店及竞争圈酒店携程渠道市场和价格相关数据',
             maxYears: 2,
             type: 'main',
-            isMarketing: true
+            isMarketing: true,
+            marketingKey: 'marketing_std'
         }, {
             id: 'marketing_ai',
             name: '智能营销助手-智能版',
@@ -1526,7 +1715,8 @@
             remark: '含ST版所有功能 + AI深度分析智慧包',
             maxYears: 2,
             type: 'main',
-            isMarketing: true
+            isMarketing: true,
+            marketingKey: 'marketing_ai'
         }];
 
         const ADDON_PRODUCTS = [{
@@ -1536,15 +1726,6 @@
                 4000, 6000, 22000
             ]),
             remark: '新增英文ASR场景需按此收费',
-            maxYears: 1,
-            type: 'addon'
-        }, {
-            id: 'yue_asr',
-            name: '粤语ASR',
-            prices: p6([500, 1000, 2000, 4000, 6000, 22000], [500, 1000, 2000, 4000, 6000, 22000], [500, 1000, 2000,
-                4000, 6000, 22000
-            ]),
-            remark: '新增粤语ASR场景需按此收费',
             maxYears: 1,
             type: 'addon'
         }, {
@@ -1578,15 +1759,7 @@
             id: 'new_ota',
             name: '新增OTA渠道',
             prices: p6([500, 500, 500, 500, 500, 500], [400, 400, 400, 400, 400, 400], [300, 300, 300, 300, 300, 300]),
-            remark: 'Expedia/Agoda/Booking/TripAdvisor/hotel.com/猫途鹰/高德，默认接入近半年数据',
-            maxYears: 1,
-            type: 'addon'
-        }, {
-            id: 'review_extend',
-            name: '点评抓取周期延长',
-            prices: p6([1000, 1000, 1000, 1000, 1000, 1000], [500, 500, 500, 500, 500, 500], [300, 300, 300, 300, 300,
-                300]),
-            remark: '延长点评抓取周期按此收费',
+            remark: '新增OTA渠道按此收费',
             maxYears: 1,
             type: 'addon'
         }, {
@@ -1595,24 +1768,7 @@
             prices: p6([2000, 2000, 2000, 2000, 2000, 2000], [1500, 1500, 1500, 1500, 1500, 1500], [1000, 1000, 1000,
                 1000, 1000, 1000
             ]),
-            remark: '抓取抖音酒店点评；需酒店配合验证登录',
-            maxYears: 1,
-            type: 'addon'
-        }, {
-            id: 'douyin_keyword',
-            name: '抖音-关键词搜索',
-            prices: p6([12000, 12000, 12000, 12000, 12000, 12000], [10000, 10000, 10000, 10000, 10000, 10000],
-                [10000, 10000, 10000, 10000, 10000, 10000]),
-            remark: '1个关键词按此报价；最多抓取近180天',
-            maxYears: 1,
-            type: 'addon'
-        }, {
-            id: 'weibo_keyword',
-            name: '微博-关键词搜索',
-            prices: p6([8000, 8000, 8000, 8000, 8000, 8000], [5000, 5000, 5000, 5000, 5000, 5000], [5000, 5000, 5000,
-                5000, 5000, 5000
-            ]),
-            remark: '1个关键词按此报价；最多抓取近180天',
+            remark: '抓取抖音酒店点评',
             maxYears: 1,
             type: 'addon'
         }, {
@@ -1620,13 +1776,6 @@
             name: '管理员账号（超出默认5个）',
             prices: p6([100, 100, 100, 100, 100, 100], [100, 100, 100, 100, 100, 100], [100, 100, 100, 100, 100, 100]),
             remark: '默认5个管理员账号，超出按此收费',
-            maxYears: 1,
-            type: 'addon'
-        }, {
-            id: 'member_account',
-            name: '成员账号（超出默认10个）',
-            prices: p6([80, 80, 80, 80, 80, 80], [80, 80, 80, 80, 80, 80], [80, 80, 80, 80, 80, 80]),
-            remark: '默认10个成员账号，超出按此收费',
             maxYears: 1,
             type: 'addon'
         }, {
@@ -1642,16 +1791,7 @@
             id: 'catering_review',
             name: '餐饮点评-OTA渠道',
             prices: p6([500, 500, 500, 500, 500, 500], [400, 400, 400, 400, 400, 400], [300, 300, 300, 300, 300, 300]),
-            remark: '美团、大众点评、Google渠道餐饮接入，每家餐饮店铺按此收费',
-            maxYears: 1,
-            type: 'addon'
-        }, {
-            id: 'catering_douyin',
-            name: '餐饮点评-抖音',
-            prices: p6([2000, 2000, 2000, 2000, 2000, 2000], [1500, 1500, 1500, 1500, 1500, 1500], [1000, 1000, 1000,
-                1000, 1000, 1000
-            ]),
-            remark: '抓取抖音餐饮点评；需酒店配合验证登录',
+            remark: '美团、大众点评、Google渠道餐饮接入',
             maxYears: 1,
             type: 'addon'
         }, {
@@ -1661,15 +1801,6 @@
                 2000, 2000, 2000
             ]),
             remark: '携程、美团、大众点评渠道，每个乐园按此收费',
-            maxYears: 1,
-            type: 'addon'
-        }, {
-            id: 'park_douyin',
-            name: '乐园点评-抖音',
-            prices: p6([5000, 5000, 5000, 5000, 5000, 5000], [3000, 3000, 3000, 3000, 3000, 3000], [2000, 2000, 2000,
-                2000, 2000, 2000
-            ]),
-            remark: '抓取乐园抖音点评；需酒店配合验证登录',
             maxYears: 1,
             type: 'addon'
         }, {
@@ -1684,11 +1815,8 @@
             specialCalc: (val) => Math.round(val * 2)
         }];
 
-        // ================================================================
-        //  集团产品
-        // ================================================================
-
-        const MAIN_GROUP_5_29 = [{
+        // 集团产品（简化）
+        const MAIN_GROUP = [{
             id: 'hqm',
             name: '住前-质检（HQM）',
             prices: p6([4588, 4588, 4588, 4588, 4588, 4588], [3888, 3888, 3888, 3888, 3888, 3888], [3288, 3288, 3288,
@@ -1702,7 +1830,7 @@
             name: '住中-语音',
             prices: p6([11588.2, 13688, 18188, 26288, 36688, 50688], [9888, 11588.2, 15488, 22388, 31188, 43099.2],
                 [7288, 9588, 12788, 18488, 25688, 35488]),
-            remark: '包含住中语音(默认包含3个部门的语音数据，推荐前厅/客房/总机），不含住后点评，不含硬件',
+            remark: '包含住中语音',
             maxYears: 3,
             type: 'main'
         }, {
@@ -1711,7 +1839,7 @@
             prices: p6([5988, 5988, 5988, 5988, 5988, 5988], [5188, 5188, 5188, 5188, 5188, 5188], [4288, 4288, 4288,
                 4288, 4288, 4288
             ]),
-            remark: '包含住后点评模块，默认接入国内6个OTA渠道近半年内数据',
+            remark: '包含住后点评模块',
             maxYears: 3,
             type: 'main'
         }, {
@@ -1720,7 +1848,7 @@
             prices: p6([14888, 18688, 23188, 30088, 39388, 52088], [12688, 15888, 19688, 25588, 33488, 44188], [9988,
                 13088, 16188, 21088, 27588, 36388
             ]),
-            remark: '包含住中语音及住后点评模块，具体内容同单模块功能',
+            remark: '包含住中语音及住后点评模块',
             maxYears: 3,
             type: 'main'
         }, {
@@ -1729,101 +1857,7 @@
             prices: p6([16288, 21688, 25788, 33088, 42388, 54988], [13888, 18488, 21888, 28088, 35988, 46788], [11488,
                 15188, 17988, 23188, 29688, 38588
             ]),
-            remark: '包含住前质检（HQM）、住中语音及住后点评模块，具体内容同单模块功能',
-            maxYears: 3,
-            type: 'main'
-        }];
-
-        const MAIN_GROUP_30_99 = [{
-            id: 'hqm',
-            name: '住前-质检（HQM）',
-            prices: p6([4288, 4288, 4288, 4288, 4288, 4288], [3688, 3688, 3688, 3688, 3688, 3688], [3088, 3088, 3088,
-                3088, 3088, 3088
-            ]),
-            remark: '包含住前-质检（HQM）标准模板',
-            maxYears: 3,
-            type: 'main'
-        }, {
-            id: 'voice',
-            name: '住中-语音',
-            prices: p6([10988, 12888, 17188, 24788, 34588, 47888], [9388, 10988, 14588, 21088, 29388, 40688], [6888,
-                8988, 12088, 17488, 24288, 33488
-            ]),
-            remark: '包含住中语音(默认包含3个部门的语音数据，推荐前厅/客房/总机），不含住后点评，不含硬件',
-            maxYears: 3,
-            type: 'main'
-        }, {
-            id: 'review',
-            name: '住后-点评',
-            prices: p6([5588, 5588, 5588, 5588, 5588, 5588], [4888, 4888, 4888, 4888, 4888, 4888], [3988, 3988, 3988,
-                3988, 3988, 3988
-            ]),
-            remark: '包含住后点评模块，默认接入国内6个OTA渠道近半年内数据',
-            maxYears: 3,
-            type: 'main'
-        }, {
-            id: 'voice_review',
-            name: '住中+住后',
-            prices: p6([14088, 17588, 21888, 28388, 37188, 49188], [11988, 14988, 18588, 24188, 31588, 41788], [9488,
-                12388, 15288, 19888, 25988, 34388
-            ]),
-            remark: '包含住中语音及住后点评模块，具体内容同单模块功能',
-            maxYears: 3,
-            type: 'main'
-        }, {
-            id: 'all',
-            name: '住前+住中+住后',
-            prices: p6([15388, 20488, 24288, 31188, 40088, 51988], [13088, 17488, 20688, 26488, 33988, 44188], [10788,
-                14388, 16988, 21888, 28088, 36388
-            ]),
-            remark: '包含住前质检（HQM）、住中语音及住后点评模块，具体内容同单模块功能',
-            maxYears: 3,
-            type: 'main'
-        }];
-
-        const MAIN_GROUP_100_999 = [{
-            id: 'hqm',
-            name: '住前-质检（HQM）',
-            prices: p6([3788, 3788, 3788, 3788, 3788, 3788], [3288, 3288, 3288, 3288, 3288, 3288], [2688, 2688, 2688,
-                2688, 2688, 2688
-            ]),
-            remark: '包含住前-质检（HQM）标准模板',
-            maxYears: 3,
-            type: 'main'
-        }, {
-            id: 'voice',
-            name: '住中-语音',
-            prices: p6([9688, 11388, 15188, 21888, 30588, 42288], [8288, 9688, 12888, 18588, 25988, 35988], [6088, 7988,
-                10688, 15388, 21388, 29588
-            ]),
-            remark: '包含住中语音(默认包含3个部门的语音数据，推荐前厅/客房/总机），不含住后点评，不含硬件',
-            maxYears: 3,
-            type: 'main'
-        }, {
-            id: 'review',
-            name: '住后-点评',
-            prices: p6([4988, 4988, 4988, 4988, 4988, 4988], [4288, 4288, 4288, 4288, 4288, 4288], [3588, 3588, 3588,
-                3588, 3588, 3588
-            ]),
-            remark: '包含住后点评模块，默认接入国内6个OTA渠道近半年内数据',
-            maxYears: 3,
-            type: 'main'
-        }, {
-            id: 'voice_review',
-            name: '住中+住后',
-            prices: p6([12488, 15588, 19288, 25088, 32788, 43388], [10588, 13188, 16488, 21288, 27888, 36888], [8388,
-                10888, 13488, 17588, 22988, 30288
-            ]),
-            remark: '包含住中语音及住后点评模块，具体内容同单模块功能',
-            maxYears: 3,
-            type: 'main'
-        }, {
-            id: 'all',
-            name: '住前+住中+住后',
-            prices: p6([13588, 18088, 21488, 27588, 35388, 45888], [11588, 15388, 18288, 23388, 29988, 38988], [9588,
-                12688, 14988, 19288, 24788, 32088
-            ]),
-            remark: '包含住前质检（HQM）、住中语音及住后点评模块，具体内容同单模块功能',
+            remark: '包含住前质检（HQM）、住中语音及住后点评模块',
             maxYears: 3,
             type: 'main'
         }];
@@ -1834,7 +1868,7 @@
             prices: p6([13688, 15988, 20588, 29188, 40888, 55788], [11588, 13588, 17488, 24788, 34688, 47288], [9588,
                 11088, 14388, 20388, 28488, 38888
             ]),
-            remark: '同单店版',
+            remark: 'AI标准产品',
             maxYears: 3,
             type: 'main'
         }, {
@@ -1858,21 +1892,12 @@
         // ================================================================
         //  获取产品
         // ================================================================
-
         function getMainProducts() {
             const isGroup = state.customerType === 'group';
-            const scale = state.groupScale;
-
             if (!isGroup) {
                 return [...MAIN_SINGLE, ...AI_SINGLE, ...SCENIC_AI, ...BI_PRODUCTS, ...MARKETING_PRODUCTS];
             }
-
-            let groupCem = [];
-            if (scale === '5-29') groupCem = MAIN_GROUP_5_29;
-            else if (scale === '30-99') groupCem = MAIN_GROUP_30_99;
-            else if (scale === '100-999') groupCem = MAIN_GROUP_100_999;
-
-            return [...groupCem, ...AI_GROUP, ...SCENIC_AI, ...BI_PRODUCTS, ...MARKETING_PRODUCTS];
+            return [...MAIN_GROUP, ...AI_GROUP, ...SCENIC_AI, ...BI_PRODUCTS, ...MARKETING_PRODUCTS];
         }
 
         function getAddonProducts() {
@@ -1882,14 +1907,13 @@
         function getAllProducts() {
             const main = getMainProducts();
             const addon = getAddonProducts();
-            const addonFiltered = addon.filter(p => p.id !== 'scenic_ops');
-            return [...main, ...addonFiltered];
+            const customProducts = state.customProducts || [];
+            return [...main, ...addon, ...customProducts];
         }
 
         // ================================================================
-        //  🧠 核心逻辑
+        //  核心状态
         // ================================================================
-
         const state = {
             selected: {},
             priceLevel: 'market',
@@ -1897,7 +1921,9 @@
             customerType: 'single',
             groupScale: '5-29',
             searchKeyword: '',
-            category: 'main'
+            category: 'main',
+            customProducts: [],
+            customIdCounter: 0
         };
 
         const $ = id => document.getElementById(id);
@@ -1907,7 +1933,6 @@
         const groupScale = $('groupScale');
         const groupScaleGroup = $('groupScaleGroup');
         const searchInput = $('searchInput');
-        const categoryFilter = $('categoryFilter');
         const searchResults = $('searchResults');
         const roomError = $('roomError');
         const hotelId = $('hotelId');
@@ -1925,7 +1950,6 @@
         const groupInfoArea = $('groupInfoArea');
         const singleHotelCard = $('singleHotelCard');
         const groupHotelCard = $('groupHotelCard');
-
         const batchEnabled = $('batchEnabled');
         const batchCollapse = $('batchCollapse');
         const batchNumber = $('batchNumber');
@@ -1937,29 +1961,23 @@
         const brTotal = $('brTotal');
         const brScale = $('brScale');
         const brNote = $('brNote');
+        const customProductArea = $('customProductArea');
+        const customName = $('customName');
+        const customPrice = $('customPrice');
 
         // ================================================================
-        //  获取默认配置
+        //  价格获取
         // ================================================================
-
-        function getDefaultMarketingConfig() {
-            return {
-                baseType: 'new_customer',
-                regionMode: null // null, 'discount', 'month_gift'
-            };
-        }
-
-        // ================================================================
-        //  获取产品价格
-        // ================================================================
-
         function getProductPrice(product) {
             if (product.isMarketing) {
-                const data = state.selected[product.id];
-                if (!data) return 0;
-                const baseType = data.baseType || 'new_customer';
+                const data = state.selected[product.id] || getDefaultMarketingConfig();
+                const baseType = data.baseType || 'new';
                 const regionMode = data.regionMode || null;
-                return getMarketingFinalPrice(product.id, baseType, regionMode);
+                return getMarketingPrice(product.id, state.priceLevel, state.customerType, regionMode, baseType);
+            }
+
+            if (product.type === 'custom') {
+                return product.price || 0;
             }
 
             const level = state.priceLevel;
@@ -1967,7 +1985,7 @@
             if (roomCountVal > 99999) roomCountVal = 99999;
             if (roomCountVal < 1) return 0;
 
-            const idx = ROOM_RANGES.findIndex(r => roomCountVal >= r.min && roomCountVal <= r.max);
+            const idx = getRoomIndex(roomCountVal);
             if (idx === -1) return 0;
 
             if (product.isSpecial) {
@@ -1989,11 +2007,14 @@
 
         function getDisplayPrice(product) {
             if (product.isMarketing) {
-                const data = state.selected[product.id];
-                if (!data) return 0;
-                const baseType = data.baseType || 'new_customer';
+                const data = state.selected[product.id] || getDefaultMarketingConfig();
+                const baseType = data.baseType || 'new';
                 const regionMode = data.regionMode || null;
-                return getMarketingFinalPrice(product.id, baseType, regionMode);
+                return getMarketingPrice(product.id, state.priceLevel, state.customerType, regionMode, baseType);
+            }
+
+            if (product.type === 'custom') {
+                return product.price || 0;
             }
 
             const level = state.priceLevel;
@@ -2001,7 +2022,7 @@
             if (roomCountVal > 99999) roomCountVal = 99999;
             if (roomCountVal < 1) return 0;
 
-            const idx = ROOM_RANGES.findIndex(r => roomCountVal >= r.min && roomCountVal <= r.max);
+            const idx = getRoomIndex(roomCountVal);
             if (idx === -1) return 0;
 
             if (product.isSpecial) {
@@ -2022,9 +2043,8 @@
         }
 
         // ================================================================
-        //  更新营销助手配置
+        //  营销助手配置更新
         // ================================================================
-
         function updateMarketingBaseType(id, value) {
             if (state.selected[id]) {
                 state.selected[id].baseType = value;
@@ -2040,41 +2060,66 @@
         }
 
         // ================================================================
-        //  简化版产品获取（实际使用时替换为完整版）
+        //  自定义产品
         // ================================================================
-
-        function getMainProducts() {
-            return [...MAIN_SINGLE, ...AI_SINGLE, ...SCENIC_AI, ...BI_PRODUCTS, ...MARKETING_PRODUCTS];
+        function addCustomProduct() {
+            const name = customName.value.trim();
+            const price = parseFloat(customPrice.value);
+            if (!name) { alert('请输入产品名称');
+                customName.focus(); return; }
+            if (isNaN(price) || price <= 0) { alert('请输入有效的产品单价（大于0）');
+                customPrice.focus(); return; }
+            if (state.customProducts.some(p => p.name === name)) { alert('已存在同名自定义产品，请修改名称');
+                customName.focus();
+                customName.select(); return; }
+            state.customIdCounter++;
+            const newProduct = {
+                id: 'custom_' + state.customIdCounter,
+                name: name,
+                price: price,
+                type: 'custom',
+                maxYears: 5,
+                remark: '自定义产品：' + name,
+                isCustom: true
+            };
+            state.customProducts.push(newProduct);
+            customName.value = '';
+            customPrice.value = '';
+            customName.focus();
+            renderAll();
+            if (state.category === 'custom') { renderSearchResults(true); }
+            updateAvailableCount();
         }
 
-        function getAddonProducts() {
-            return [...ADDON_PRODUCTS];
+        function deleteCustomProduct(id) {
+            if (!confirm('确定要删除该自定义产品吗？')) return;
+            state.customProducts = state.customProducts.filter(p => p.id !== id);
+            if (state.selected[id]) { delete state.selected[id]; }
+            renderAll();
+            if (state.category === 'custom') { renderSearchResults(true); }
+            updateAvailableCount();
         }
 
-        function getAllProducts() {
-            const main = getMainProducts();
-            const addon = getAddonProducts();
-            return [...main, ...addon];
-        }
+        customPrice.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') { e.preventDefault();
+                addCustomProduct(); }
+        });
+        customName.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') { e.preventDefault();
+                customPrice.focus(); }
+        });
 
         // ================================================================
-        //  🔍 酒店查询
+        //  酒店查询（简化）
         // ================================================================
-
         async function queryHotel() {
             const name = hotelName.value.trim();
-            if (!name) {
-                showQueryTip('请输入酒店名称', 'error');
-                return;
-            }
-
+            if (!name) { showQueryTip('请输入酒店名称', 'error'); return; }
             hotelQueryBtn.disabled = true;
             hotelQueryBtn.innerHTML = '<span class="spinner-sm"></span> 查询中';
             showQueryTip('正在查询...', '');
-
             try {
                 const result = await searchHotelByName(name);
-
                 if (result && result.xc_id && result.xc_id !== '未知') {
                     hotelId.value = result.xc_id;
                     hotelId.dispatchEvent(new Event('input'));
@@ -2084,9 +2129,7 @@
                         roomError.classList.remove('show');
                         renderAll();
                     }
-                    if (result.xc_name && result.xc_name !== '未知') {
-                        hotelName.value = result.xc_name;
-                    }
+                    if (result.xc_name && result.xc_name !== '未知') { hotelName.value = result.xc_name; }
                     showQueryTip('✅ 查询成功，已自动填入数据', 'success');
                 } else {
                     showQueryTip('❌ 未找到该酒店，请检查名称是否正确', 'error');
@@ -2094,7 +2137,6 @@
             } catch (err) {
                 showQueryTip('❌ 查询失败：' + err.message, 'error');
             }
-
             hotelQueryBtn.disabled = false;
             hotelQueryBtn.innerHTML = '🔍 查询';
         }
@@ -2114,42 +2156,33 @@
             }
             if (type === 'success' || type === 'error') {
                 clearTimeout(window.queryTipTimer);
-                window.queryTipTimer = setTimeout(() => {
-                    queryTip.classList.remove('show');
-                }, 4000);
+                window.queryTipTimer = setTimeout(() => { queryTip.classList.remove('show'); }, 4000);
             }
         }
 
         hotelName.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                queryHotel();
-            }
+            if (e.key === 'Enter') { e.preventDefault();
+                queryHotel(); }
         });
 
         async function searchHotelByName(hotelName) {
             try {
                 const searchUrl = 'https://m.ctrip.com/restapi/soa2/30668/search';
                 const searchParams = { action: 'online', source: 'globalonline', keyword: hotelName };
-
                 const searchResp = await fetch(searchUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json', 'Referer': 'https://www.ctrip.com/' },
                     body: JSON.stringify(searchParams)
                 });
-
                 const searchData = await searchResp.json();
                 let hotelList = searchData?.data?.list || searchData?.data || [];
                 if (!Array.isArray(hotelList)) hotelList = [];
-
                 const hotelItems = hotelList.filter(item => item.type === 'hotel');
                 if (hotelItems.length === 0) return null;
-
                 const hotel = hotelItems[0];
                 const xcId = hotel.id || '未知';
                 const xcName = hotel.word || '未知';
                 const cityId = hotel.cityId || '';
-
                 let roomNum = '未知';
                 if (cityId && xcId) {
                     try {
@@ -2159,13 +2192,11 @@
                             cityCode: String(cityId),
                             head: { Group: "ctrip" }
                         };
-
                         const roomResp = await fetch(roomUrl, {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json', 'Referer': 'https://www.ctrip.com/' },
                             body: JSON.stringify(roomParams)
                         });
-
                         const roomData = await roomResp.json();
                         const labels = roomData?.Response?.hotelInfo?.basic?.label || [];
                         for (const label of labels) {
@@ -2176,16 +2207,13 @@
                         }
                     } catch (e) {}
                 }
-
                 return { xc_id: String(xcId), xc_name: xcName, roomnum: roomNum };
-
             } catch (e) {
                 console.error('搜索失败:', e);
                 return null;
             }
         }
 
-        // ----- 酒店ID链接 -----
         hotelId.addEventListener('input', function() {
             const id = this.value.trim();
             if (id.length > 0) {
@@ -2195,16 +2223,6 @@
                 hotelLink.style.display = 'block';
             } else {
                 hotelLink.style.display = 'none';
-            }
-        });
-
-        hotelId.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                const id = this.value.trim();
-                if (id.length > 0) {
-                    window.open(
-                        `https://hotels.ctrip.com/hotels/${id}.html?cityid=2#ctm_ref=www_hp_bs_lst`, '_blank');
-                }
             }
         });
 
@@ -2223,9 +2241,8 @@
         }
 
         // ================================================================
-        //  客户类型切换
+        //  客户类型 / 集团 / 批次
         // ================================================================
-
         customerType.addEventListener('change', function() {
             state.customerType = this.value;
             if (this.value === 'group') {
@@ -2234,9 +2251,7 @@
                 groupHotelCard.style.display = 'block';
                 setTimeout(() => {
                     updateStoreRange();
-                    if (batchEnabled && batchEnabled.checked) {
-                        updateBatchResult();
-                    }
+                    if (batchEnabled && batchEnabled.checked) { updateBatchResult(); }
                 }, 50);
             } else {
                 groupScaleGroup.classList.remove('show');
@@ -2247,10 +2262,6 @@
             renderAll();
             updateAvailableCount();
         });
-
-        // ================================================================
-        //  价格权限切换
-        // ================================================================
 
         priceLevel.addEventListener('change', function() {
             state.priceLevel = this.value;
@@ -2263,10 +2274,6 @@
             });
             renderAll();
         });
-
-        // ================================================================
-        //  批次合作
-        // ================================================================
 
         batchEnabled.addEventListener('change', function() {
             if (this.checked) {
@@ -2282,34 +2289,21 @@
 
         function updateBatchResult() {
             if (!batchEnabled.checked) return;
-
             const batch = parseInt(batchNumber.value) || 1;
             const history = parseInt(historyTotal.value) || 0;
             const newCount = parseInt(groupStoreCount.value) || 0;
             const total = history + newCount;
-
             let scale = '5-29';
             let scaleLabel = '5-29家';
-
-            if (total >= 100) {
-                scale = '100-999';
-                scaleLabel = '100-999家';
-            } else if (total >= 30) {
-                scale = '30-99';
-                scaleLabel = '30-99家';
-            } else {
-                scale = '5-29';
-                scaleLabel = '5-29家';
-            }
-
+            if (total >= 100) { scale = '100-999';
+                scaleLabel = '100-999家'; } else if (total >= 30) { scale = '30-99';
+                scaleLabel = '30-99家'; }
             batchScaleSelect.value = scale;
-
             if (groupScale.value !== scale) {
                 groupScale.value = scale;
                 groupScale.dispatchEvent(new Event('change'));
                 updateStoreRange();
             }
-
             let note = '';
             if (batch === 1) {
                 note = `首批合作 ${newCount} 家，累计 ${total} 家，适用「${scaleLabel}」档位报价`;
@@ -2321,27 +2315,18 @@
                     note = `第 ${batch} 批合作新增 ${newCount} 家，累计 ${total} 家，适用「${scaleLabel}」档位报价`;
                 }
             }
-
-            if (total >= 1000) {
-                note += '（⚠️ 合作酒店数已达1000家以上，可一单一议）';
-            }
-
+            if (total >= 1000) { note += '（⚠️ 合作酒店数已达1000家以上，可一单一议）'; }
             brHistory.textContent = history + ' 家';
             brNew.textContent = newCount + ' 家';
             brTotal.textContent = total + ' 家';
             brScale.textContent = scaleLabel;
             brNote.textContent = note;
-
             batchResult.classList.add('show');
             updateGroupInfo();
         }
 
         batchNumber.addEventListener('input', updateBatchResult);
         historyTotal.addEventListener('input', updateBatchResult);
-
-        // ================================================================
-        //  集团规模联动
-        // ================================================================
 
         const GROUP_SCALE_CONFIG = {
             '5-29': { min: 5, max: 29, label: '5-29家' },
@@ -2355,7 +2340,6 @@
             const scale = groupScale.value;
             const config = GROUP_SCALE_CONFIG[scale];
             const isBatch = batchEnabled && batchEnabled.checked;
-
             if (config && storeRangeHint) {
                 if (isBatch) {
                     storeRangeHint.textContent = `(最多${config.max}家)`;
@@ -2375,10 +2359,8 @@
             const scale = groupScale.value;
             const config = GROUP_SCALE_CONFIG[scale];
             if (!config) return;
-
             let val = parseInt(groupStoreCount.value) || 0;
             const isBatch = batchEnabled && batchEnabled.checked;
-
             if (val > 0) {
                 if (val > config.max) {
                     groupStoreCount.value = config.max;
@@ -2414,9 +2396,7 @@
 
         groupStoreCount.addEventListener('input', function() {
             validateStoreCount();
-            if (batchEnabled && batchEnabled.checked) {
-                updateBatchResult();
-            }
+            if (batchEnabled && batchEnabled.checked) { updateBatchResult(); }
             updateGroupInfo();
         });
 
@@ -2424,10 +2404,8 @@
             const scale = groupScale.value;
             const config = GROUP_SCALE_CONFIG[scale];
             if (!config) return;
-
             let val = parseInt(this.value) || 0;
             const isBatch = batchEnabled && batchEnabled.checked;
-
             if (val > 0) {
                 if (val > config.max) {
                     this.value = config.max;
@@ -2435,9 +2413,7 @@
                     setTimeout(() => hideStoreError(), 3000);
                 }
             }
-            if (batchEnabled && batchEnabled.checked) {
-                updateBatchResult();
-            }
+            if (batchEnabled && batchEnabled.checked) { updateBatchResult(); }
             updateGroupInfo();
         });
 
@@ -2447,19 +2423,12 @@
             state.selected = {};
             renderAll();
             updateAvailableCount();
-            if (batchEnabled && batchEnabled.checked) {
-                updateBatchResult();
-            }
+            if (batchEnabled && batchEnabled.checked) { updateBatchResult(); }
         });
-
-        // ================================================================
-        //  集团信息更新
-        // ================================================================
 
         function updateGroupInfo() {
             const newCount = parseInt(groupStoreCount.value) || 0;
             const avg = parseInt(groupAvgRoom.value) || 0;
-
             if (newCount > 0 && avg > 0) {
                 const total = newCount * avg;
                 groupTotalRoom.textContent = total + ' 间';
@@ -2474,9 +2443,8 @@
         groupAvgRoom.addEventListener('input', updateGroupInfo);
 
         // ================================================================
-        //  产品相关函数
+        //  产品搜索 / 添加 / 渲染
         // ================================================================
-
         function isRoomCountValid() {
             const val = parseInt(roomCount.value);
             return !isNaN(val) && val >= 1;
@@ -2486,74 +2454,83 @@
             const all = getAllProducts();
             const selectedIds = Object.keys(state.selected);
             let filtered = all.filter(p => !selectedIds.includes(p.id));
-
             if (category === 'main') filtered = filtered.filter(p => p.type === 'main');
             else if (category === 'addon') filtered = filtered.filter(p => p.type === 'addon');
-
+            else if (category === 'custom') filtered = filtered.filter(p => p.type === 'custom');
             if (keyword.trim()) {
                 const kw = keyword.trim().toLowerCase();
                 filtered = filtered.filter(p => p.name.toLowerCase().includes(kw));
             }
-
             return filtered;
         }
 
         function renderSearchResults(forceShow) {
             const keyword = searchInput.value;
-            const category = categoryFilter.value;
+            const category = state.category;
             const results = searchProducts(keyword, category);
-
             const roomOk = isRoomCountValid() || state.customerType === 'group';
-
             $('resultCount').textContent = `${results.length} 个可添加`;
-
             const shouldShow = forceShow || (keyword.trim() !== '');
-
-            if (!shouldShow) {
+            if (!shouldShow && category !== 'custom') {
                 searchResults.classList.remove('show');
                 return;
             }
-
-            if (!roomOk && state.customerType === 'single') {
+            if (!roomOk && state.customerType === 'single' && category !== 'custom') {
                 searchResults.innerHTML =
                     `<div class="search-empty" style="color:#e74c3c;">⚠️ 请先填写「酒店房间数」再添加产品</div>`;
                 searchResults.classList.add('show');
                 roomError.classList.add('show');
                 return;
             }
-
             roomError.classList.remove('show');
-
             if (results.length === 0) {
-                searchResults.innerHTML =
-                    `<div class="search-empty">${keyword ? '没有匹配的产品' : (category === 'all' ? '所有产品已添加完毕' : '暂无可添加的' + (category === 'main' ? '主产品' : '增值产品'))}</div>`;
+                let msg = keyword ? '没有匹配的产品' : '暂无可添加的产品';
+                if (category === 'custom') { msg = keyword ? '没有匹配的自定义产品' : '暂无自定义产品，请在上方添加'; }
+                searchResults.innerHTML = `<div class="search-empty">${msg}</div>`;
                 searchResults.classList.add('show');
                 return;
             }
-
             let html = '';
             results.forEach(p => {
-                const price = getProductPrice(p);
-                let priceDisplay;
+                let price = 0;
+                let priceDisplay = '—';
+                let labelSuffix = '';
+
                 if (p.isMarketing) {
-                    const defaultConfig = getDefaultMarketingConfig();
-                    const data = state.selected[p.id] || defaultConfig;
-                    const label = getMarketingLabel(data.baseType || 'new_customer', data.regionMode);
-                    priceDisplay = price > 0 ? `¥${price.toLocaleString()} (${label})` : '—';
+                    const data = state.selected[p.id] || getDefaultMarketingConfig();
+                    const baseType = data.baseType || 'new';
+                    const regionMode = data.regionMode || null;
+                    price = getMarketingPrice(p.id, state.priceLevel, state.customerType, regionMode, baseType);
+                    const label = getMarketingLabel(p.id, baseType, regionMode, state.priceLevel, state
+                    .customerType);
+                    labelSuffix = ' (' + label + ')';
+                    priceDisplay = price > 0 ? `¥${price.toLocaleString()}${labelSuffix}` : '—';
+                } else if (p.type === 'custom') {
+                    price = p.price || 0;
+                    priceDisplay = price > 0 ? `¥${price.toLocaleString()}` : '—';
                 } else {
+                    price = getProductPrice(p);
                     priceDisplay = p.isSpecial ?
                         (price > 0 ? `¥${price.toLocaleString()}` : '按实际评估') :
                         (price > 0 ? `¥${price.toLocaleString()}` : '—');
                 }
+
+                let delBtn = '';
+                if (p.type === 'custom') {
+                    delBtn =
+                        `<button class="r-del" onclick="deleteCustomProduct('${p.id}')">✕</button>`;
+                }
+
                 html += `
                             <div class="search-result-item">
                                 <div>
-                                    <div class="r-name">${p.name} <span class="r-tag">${p.type === 'main' ? '主产品' : '增值产品'}</span></div>
+                                    <div class="r-name">${p.name} <span class="r-tag">${p.type === 'main' ? '主产品' : (p.type === 'addon' ? '增值产品' : '自定义')}</span></div>
                                     <div class="r-price">${priceDisplay} <span style="font-weight:400;color:#8895aa;font-size:12px;">/年</span></div>
                                 </div>
-                                <button class="r-add" onclick="addProduct('${p.id}')">
-                                    + 添加
-                                </button>
+                                <div style="display:flex;gap:4px;">
+                                    <button class="r-add" onclick="addProduct('${p.id}')">+ 添加</button>
+                                    ${delBtn}
+                                </div>
                             </div>
                         `;
             });
@@ -2582,7 +2559,7 @@
         function removeProduct(id) {
             delete state.selected[id];
             renderAll();
-            if (searchInput.value.trim() !== '') {
+            if (searchInput.value.trim() !== '' || state.category === 'custom') {
                 renderSearchResults(true);
             } else {
                 searchResults.classList.remove('show');
@@ -2594,18 +2571,17 @@
             const allProducts = getAllProducts();
             const selectedIds = Object.keys(state.selected);
             let available = allProducts.filter(p => !selectedIds.includes(p.id));
-            const cat = categoryFilter.value;
+            const cat = state.category;
             if (cat === 'main') available = available.filter(p => p.type === 'main');
             else if (cat === 'addon') available = available.filter(p => p.type === 'addon');
+            else if (cat === 'custom') available = available.filter(p => p.type === 'custom');
             $('resultCount').textContent = `${available.length} 个可添加`;
         }
 
         function updateYears(id, val) {
             if (state.selected[id]) {
                 const years = parseInt(val) || 0;
-                if (years > 0) {
-                    state.selected[id].years = years;
-                }
+                if (years > 0) { state.selected[id].years = years; }
                 updateResult();
                 updateSelectedTotals();
             }
@@ -2627,26 +2603,18 @@
         }
 
         function updateSpecialDisplay(id) {
-            const product = getAllProducts().find(p => p.id === id);
+            const allProducts = getAllProducts();
+            const product = allProducts.find(p => p.id === id);
             if (!product) return;
             const price = getDisplayPrice(product);
             const years = state.selected[id] ? state.selected[id].years : 1;
             const total = price * years;
-
             const priceEl = document.querySelector(`#selectedList .selected-item[data-id="${id}"] .s-price strong`);
-            if (priceEl) {
-                priceEl.textContent = price > 0 ? `¥${price.toLocaleString()}` : '待计算';
-            }
-
+            if (priceEl) { priceEl.textContent = price > 0 ? `¥${price.toLocaleString()}` : '待计算'; }
             const totalEl = document.querySelector(`#selectedList .selected-item[data-id="${id}"] .s-total`);
-            if (totalEl) {
-                totalEl.textContent = `¥${total.toLocaleString()}`;
-            }
-
+            if (totalEl) { totalEl.textContent = `¥${total.toLocaleString()}`; }
             const resultEl = document.querySelector(`#selectedList .selected-item[data-id="${id}"] .s-special-input .result`);
-            if (resultEl) {
-                resultEl.textContent = price > 0 ? `= ¥${price.toLocaleString()}` : '';
-            }
+            if (resultEl) { resultEl.textContent = price > 0 ? `= ¥${price.toLocaleString()}` : ''; }
         }
 
         function updateSelectedTotals() {
@@ -2654,9 +2622,7 @@
             const selectedIds = Object.keys(state.selected);
             selectedIds.forEach(id => {
                 const product = allProducts.find(p => p.id === id);
-                if (product) {
-                    updateSpecialDisplay(id);
-                }
+                if (product) { updateSpecialDisplay(id); }
             });
         }
 
@@ -2674,15 +2640,12 @@
             const allProducts = getAllProducts();
             const selectedIds = Object.keys(state.selected);
             const selected = allProducts.filter(p => selectedIds.includes(p.id));
-
             const countBadge = $('selectedCountBadge');
             countBadge.textContent = `${selected.length} 个`;
-
             if (selected.length === 0) {
                 container.innerHTML = '<div class="selected-empty">暂未选择任何产品，请在上方搜索添加</div>';
                 return;
             }
-
             let html = '';
             selected.forEach(p => {
                 const price = getDisplayPrice(p);
@@ -2691,28 +2654,40 @@
                 const isSpecial = p.isSpecial || false;
                 const specialVal = state.selected[p.id] ? state.selected[p.id].specialValue : '';
                 const isMarketing = p.isMarketing || false;
+                const isCustom = p.type === 'custom' || false;
 
-                let baseType = 'new_customer';
+                let baseType = 'new';
                 let regionMode = null;
                 let priceLabel = '';
                 let discountTag = '';
 
                 if (isMarketing) {
                     const data = state.selected[p.id] || getDefaultMarketingConfig();
-                    baseType = data.baseType || 'new_customer';
+                    baseType = data.baseType || 'new';
                     regionMode = data.regionMode || null;
-                    const label = getMarketingLabel(baseType, regionMode);
+                    const label = getMarketingLabel(p.id, baseType, regionMode, state.priceLevel, state
+                    .customerType);
                     priceLabel = ' (' + label + ')';
-                    if (regionMode === 'discount') {
-                        discountTag = '<span class="price-tag discount">92折</span>';
-                    } else if (regionMode === 'month_gift') {
+                    if (state.priceLevel === 'region' && regionMode === 'discount') {
+                        discountTag = '<span class="price-tag discount">约92折</span>';
+                    } else if (state.priceLevel === 'region' && regionMode === 'month_gift') {
                         discountTag = '<span class="price-tag">赠送月份</span>';
+                    } else if (state.priceLevel === 'sales') {
+                        if (state.customerType === 'group') {
+                            discountTag = '<span class="price-tag">集团价</span>';
+                        } else if (baseType === 'existing') {
+                            discountTag = '<span class="price-tag">熟客价</span>';
+                        } else {
+                            discountTag = '<span class="price-tag">新客价</span>';
+                        }
                     }
                 }
 
                 let priceDisplay;
                 if (isMarketing) {
                     priceDisplay = price > 0 ? `¥${price.toLocaleString()}${priceLabel}` : '待计算';
+                } else if (isCustom) {
+                    priceDisplay = price > 0 ? `¥${price.toLocaleString()}` : '待计算';
                 } else {
                     priceDisplay = isSpecial ?
                         (price > 0 ? `¥${price.toLocaleString()}` : '待计算') :
@@ -2738,16 +2713,14 @@
                 for (let i = 1; i <= maxY; i++) {
                     yearBtns.push(
                         `<button class="${i === years ? 'active' : ''}" onclick="setYears('${p.id}', ${i})">${i}</button>`
-                    );
+                        );
                 }
 
-                // 营销助手价格选择
                 let marketingHtml = '';
                 if (isMarketing) {
                     const isRegion = state.priceLevel === 'region';
                     const isSales = state.priceLevel === 'sales';
 
-                    // 基准价格下拉
                     const baseOptions = getBasePriceOptions(state.customerType);
                     let currentBase = baseType;
                     const hasCurrent = baseOptions.some(opt => opt.value === currentBase);
@@ -2763,32 +2736,37 @@
                         optionHtml += `<option value="${opt.value}" ${selected}>${opt.label}</option>`;
                     });
 
-                    // 区总模式切换（92折 / 赠送月份）
                     let regionToggleHtml = '';
                     if (isRegion) {
                         const isDiscount = regionMode === 'discount';
                         const isMonthGift = regionMode === 'month_gift';
                         regionToggleHtml = `
                                     <div class="region-toggle">
-                                        <button class="rt-btn ${isDiscount ? 'active discount' : ''}" onclick="updateMarketingRegionMode('${p.id}', 'discount')">92折优惠</button>
+                                        <button class="rt-btn ${isDiscount ? 'active discount' : ''}" onclick="updateMarketingRegionMode('${p.id}', 'discount')">约92折优惠</button>
                                         <button class="rt-btn ${isMonthGift ? 'active' : ''}" onclick="updateMarketingRegionMode('${p.id}', 'month_gift')">赠送月份</button>
                                     </div>
                                 `;
                     }
 
-                    marketingHtml = `
-                                <div style="display:flex;gap:4px;flex-wrap:wrap;align-items:center;">
-                                    ${regionToggleHtml}
-                                    <select class="marketing-price-select" onchange="updateMarketingBaseType('${p.id}', this.value)">
-                                        ${optionHtml}
-                                    </select>
-                                    ${discountTag}
-                                </div>
-                            `;
-
-                    // 如果既不是区总也不是销售权限价（市场标准价），营销助手不显示价格选择
                     if (!isRegion && !isSales) {
-                        marketingHtml = `<span style="font-size:12px;color:#8895aa;">请选择「销售权限价」或「区总折扣价」</span>`;
+                        marketingHtml = `
+                                    <div style="display:flex;gap:4px;flex-wrap:wrap;align-items:center;">
+                                        <span style="font-size:10px;color:#8895aa;">市场价</span>
+                                        <select class="marketing-price-select market-mode" onchange="updateMarketingBaseType('${p.id}', this.value)">
+                                            ${optionHtml}
+                                        </select>
+                                    </div>
+                                `;
+                    } else {
+                        marketingHtml = `
+                                    <div style="display:flex;gap:4px;flex-wrap:wrap;align-items:center;">
+                                        ${regionToggleHtml}
+                                        <select class="marketing-price-select" onchange="updateMarketingBaseType('${p.id}', this.value)">
+                                            ${optionHtml}
+                                        </select>
+                                        ${discountTag}
+                                    </div>
+                                `;
                     }
                 }
 
@@ -2797,7 +2775,8 @@
                                 <div class="s-left">
                                     <div class="s-name">
                                         ${p.name}
-                                        <button class="remark-tag-btn" onclick="showRemark('${p.remark.replace(/'/g, "\\'")}')">📌</button>
+                                        ${p.remark ? `<button class="remark-tag-btn" onclick="showRemark('${p.remark.replace(/'/g, "\\'")}')">📌</button>` : ''}
+                                        ${isCustom ? '<span style="font-size:10px;color:#8895aa;margin-left:4px;">自定义</span>' : ''}
                                     </div>
                                     <div class="s-price">单价：<strong>${priceDisplay}</strong> /年</div>
                                     ${specialHtml}
@@ -2824,7 +2803,6 @@
             const selectedIds = Object.keys(state.selected);
             let total = 0;
             let remarks = [];
-
             allProducts.forEach(p => {
                 if (selectedIds.includes(p.id)) {
                     const price = getDisplayPrice(p);
@@ -2834,8 +2812,11 @@
                         let priceDisplay;
                         if (p.isMarketing) {
                             const data = state.selected[p.id] || getDefaultMarketingConfig();
-                            const label = getMarketingLabel(data.baseType || 'new_customer', data.regionMode);
+                            const label = getMarketingLabel(p.id, data.baseType || 'new', data.regionMode,
+                                state.priceLevel, state.customerType);
                             priceDisplay = price > 0 ? `¥${price.toLocaleString()} (${label})` : '待计算';
+                        } else if (p.type === 'custom') {
+                            priceDisplay = price > 0 ? `¥${price.toLocaleString()}` : '待计算';
                         } else {
                             priceDisplay = p.isSpecial ?
                                 (price > 0 ? `¥${price.toLocaleString()}` : '待计算') :
@@ -2845,10 +2826,8 @@
                     }
                 }
             });
-
             $('subtotalDisplay').textContent = `¥${total.toLocaleString()}`;
             $('totalDisplay').innerHTML = `¥${total.toLocaleString()} <small>/ 合同期</small>`;
-
             const remarksEl = $('selectedRemarks');
             if (remarks.length > 0) {
                 remarksEl.innerHTML = `📌 ${remarks.join('<br>📌 ')}`;
@@ -2860,7 +2839,7 @@
         function renderAll() {
             renderSelectedList();
             updateResult();
-            if (searchInput.value.trim() !== '') {
+            if (searchInput.value.trim() !== '' || state.category === 'custom') {
                 renderSearchResults(true);
             } else {
                 searchResults.classList.remove('show');
@@ -2871,7 +2850,6 @@
         // ================================================================
         //  房间数输入
         // ================================================================
-
         function handleRoomInput() {
             let val = parseInt(roomCount.value) || 0;
             if (val < 1) {
@@ -2891,27 +2869,51 @@
         roomCount.addEventListener('input', handleRoomInput);
         roomCount.addEventListener('blur', function() {
             let val = parseInt(this.value) || 0;
-            if (val > 99999) {
-                this.value = 99999;
+            if (val > 99999) { this.value = 99999;
                 state.roomCount = 99999;
-                renderAll();
-            }
-            if (this.value.trim() === '') {
-                state.roomCount = null;
-                renderAll();
-            }
+                renderAll(); }
+            if (this.value.trim() === '') { state.roomCount = null;
+                renderAll(); }
         });
 
         // ================================================================
-        //  事件绑定
+        //  分类切换
         // ================================================================
+        const categoryToggle = document.getElementById('categoryToggle');
+        categoryToggle.addEventListener('click', function(e) {
+            const btn = e.target.closest('.cat-btn');
+            if (!btn) return;
+            const cat = btn.dataset.cat;
+            this.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            state.category = cat;
+            if (cat === 'custom') {
+                customProductArea.style.display = 'block';
+                searchInput.placeholder = '搜索自定义产品...';
+            } else {
+                customProductArea.style.display = 'none';
+                searchInput.placeholder = '输入产品名称搜索...';
+            }
+            searchInput.value = '';
+            if (state.customerType === 'single' && !isRoomCountValid() && cat !== 'custom') {
+                roomError.classList.add('show');
+                searchResults.classList.remove('show');
+                return;
+            }
+            roomError.classList.remove('show');
+            renderSearchResults(true);
+            updateAvailableCount();
+        });
 
+        // ================================================================
+        //  搜索输入框
+        // ================================================================
         let searchTimer;
         searchInput.addEventListener('input', function() {
             clearTimeout(searchTimer);
             searchTimer = setTimeout(() => {
                 state.searchKeyword = this.value;
-                if (this.value.trim() !== '') {
+                if (this.value.trim() !== '' || state.category === 'custom') {
                     renderSearchResults(true);
                 } else {
                     searchResults.classList.remove('show');
@@ -2921,51 +2923,68 @@
         });
 
         searchInput.addEventListener('focus', function() {
-            if (state.customerType === 'single' && !isRoomCountValid()) {
+            if (state.customerType === 'single' && !isRoomCountValid() && state.category !== 'custom') {
                 roomError.classList.add('show');
                 roomCount.focus();
                 return;
             }
             roomError.classList.remove('show');
-            if (this.value.trim() !== '') {
+            if (this.value.trim() !== '' || state.category === 'custom') {
                 renderSearchResults(true);
             } else {
                 const allProducts = getAllProducts();
                 const selectedIds = Object.keys(state.selected);
                 let available = allProducts.filter(p => !selectedIds.includes(p.id));
-                const cat = categoryFilter.value;
+                const cat = state.category;
                 if (cat === 'main') available = available.filter(p => p.type === 'main');
                 else if (cat === 'addon') available = available.filter(p => p.type === 'addon');
-
+                else if (cat === 'custom') available = available.filter(p => p.type === 'custom');
                 if (available.length === 0) {
-                    searchResults.innerHTML =
-                        `<div class="search-empty">${cat === 'all' ? '所有产品已添加完毕' : '暂无可添加的' + (cat === 'main' ? '主产品' : '增值产品')}</div>`;
+                    let msg = cat === 'custom' ? '暂无自定义产品' : '暂无可添加的产品';
+                    searchResults.innerHTML = `<div class="search-empty">${msg}</div>`;
                     searchResults.classList.add('show');
                 } else {
                     let html = '';
                     available.forEach(p => {
-                        const price = getProductPrice(p);
-                        let priceDisplay;
+                        let price = 0;
+                        let priceDisplay = '—';
+                        let labelSuffix = '';
+
                         if (p.isMarketing) {
-                            const defaultConfig = getDefaultMarketingConfig();
-                            const data = state.selected[p.id] || defaultConfig;
-                            const label = getMarketingLabel(data.baseType || 'new_customer', data
-                            .regionMode);
-                            priceDisplay = price > 0 ? `¥${price.toLocaleString()} (${label})` : '—';
+                            const data = state.selected[p.id] || getDefaultMarketingConfig();
+                            const baseType = data.baseType || 'new';
+                            const regionMode = data.regionMode || null;
+                            price = getMarketingPrice(p.id, state.priceLevel, state.customerType,
+                                regionMode, baseType);
+                            const label = getMarketingLabel(p.id, baseType, regionMode, state
+                                .priceLevel, state.customerType);
+                            labelSuffix = ' (' + label + ')';
+                            priceDisplay = price > 0 ? `¥${price.toLocaleString()}${labelSuffix}` :
+                                '—';
+                        } else if (p.type === 'custom') {
+                            price = p.price || 0;
+                            priceDisplay = price > 0 ? `¥${price.toLocaleString()}` : '—';
                         } else {
+                            price = getProductPrice(p);
                             priceDisplay = p.isSpecial ?
                                 (price > 0 ? `¥${price.toLocaleString()}` : '按实际评估') :
                                 (price > 0 ? `¥${price.toLocaleString()}` : '—');
                         }
+                        let delBtn = '';
+                        if (p.type === 'custom') {
+                            delBtn =
+                                `<button class="r-del" onclick="deleteCustomProduct('${p.id}')">✕</button>`;
+                        }
                         html += `
                                     <div class="search-result-item">
                                         <div>
-                                            <div class="r-name">${p.name} <span class="r-tag">${p.type === 'main' ? '主产品' : '增值产品'}</span></div>
+                                            <div class="r-name">${p.name} <span class="r-tag">${p.type === 'main' ? '主产品' : (p.type === 'addon' ? '增值产品' : '自定义')}</span></div>
                                             <div class="r-price">${priceDisplay} <span style="font-weight:400;color:#8895aa;font-size:12px;">/年</span></div>
                                         </div>
-                                        <button class="r-add" onclick="addProduct('${p.id}')">
-                                            + 添加
-                                        </button>
+                                        <div style="display:flex;gap:4px;">
+                                            <button class="r-add" onclick="addProduct('${p.id}')">+ 添加</button>
+                                            ${delBtn}
+                                        </div>
                                     </div>
                                 `;
                     });
@@ -2978,76 +2997,24 @@
 
         document.addEventListener('click', function(e) {
             const searchArea = document.querySelector('.search-add-area');
-            if (!searchArea.contains(e.target) && !searchResults.contains(e.target)) {
-                searchResults.classList.remove('show');
+            const customArea = document.querySelector('.custom-product-area');
+            if (!searchArea.contains(e.target) && !searchResults.contains(e.target) && !customArea.contains(e
+                .target)) {
+                if (state.category !== 'custom') {
+                    searchResults.classList.remove('show');
+                }
             }
-        });
-
-        categoryFilter.addEventListener('change', function() {
-            state.category = this.value;
-            if (state.customerType === 'single' && !isRoomCountValid()) {
-                roomError.classList.add('show');
-                searchResults.classList.remove('show');
-                return;
-            }
-            roomError.classList.remove('show');
-            const allProducts = getAllProducts();
-            const selectedIds = Object.keys(state.selected);
-            let available = allProducts.filter(p => !selectedIds.includes(p.id));
-            const cat = this.value;
-            if (cat === 'main') available = available.filter(p => p.type === 'main');
-            else if (cat === 'addon') available = available.filter(p => p.type === 'addon');
-
-            if (available.length === 0) {
-                searchResults.innerHTML =
-                    `<div class="search-empty">${cat === 'all' ? '所有产品已添加完毕' : '暂无可添加的' + (cat === 'main' ? '主产品' : '增值产品')}</div>`;
-                searchResults.classList.add('show');
-            } else {
-                let html = '';
-                available.forEach(p => {
-                    const price = getProductPrice(p);
-                    let priceDisplay;
-                    if (p.isMarketing) {
-                        const defaultConfig = getDefaultMarketingConfig();
-                        const data = state.selected[p.id] || defaultConfig;
-                        const label = getMarketingLabel(data.baseType || 'new_customer', data
-                        .regionMode);
-                        priceDisplay = price > 0 ? `¥${price.toLocaleString()} (${label})` : '—';
-                    } else {
-                        priceDisplay = p.isSpecial ?
-                            (price > 0 ? `¥${price.toLocaleString()}` : '按实际评估') :
-                            (price > 0 ? `¥${price.toLocaleString()}` : '—');
-                    }
-                    html += `
-                                <div class="search-result-item">
-                                    <div>
-                                        <div class="r-name">${p.name} <span class="r-tag">${p.type === 'main' ? '主产品' : '增值产品'}</span></div>
-                                        <div class="r-price">${priceDisplay} <span style="font-weight:400;color:#8895aa;font-size:12px;">/年</span></div>
-                                    </div>
-                                    <button class="r-add" onclick="addProduct('${p.id}')">
-                                        + 添加
-                                    </button>
-                                </div>
-                            `;
-                });
-                searchResults.innerHTML = html;
-                searchResults.classList.add('show');
-            }
-            $('resultCount').textContent = `${available.length} 个可添加`;
-            searchInput.value = '';
         });
 
         searchInput.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
-                if (state.customerType === 'single' && !isRoomCountValid()) {
+                if (state.customerType === 'single' && !isRoomCountValid() && state.category !== 'custom') {
                     roomError.classList.add('show');
                     roomCount.focus();
                     return;
                 }
-                const results = searchProducts(this.value, categoryFilter.value);
-                if (results.length > 0) {
-                    addProduct(results[0].id);
-                }
+                const results = searchProducts(this.value, state.category);
+                if (results.length > 0) { addProduct(results[0].id); }
             }
         });
 
@@ -3056,14 +3023,12 @@
         });
 
         // ================================================================
-        //  💾 保存报价功能（简化版）
+        //  保存 / 预览 / 导出
         // ================================================================
-
         function getQuoteData() {
             const allProducts = getAllProducts();
             const selectedIds = Object.keys(state.selected);
             const selected = allProducts.filter(p => selectedIds.includes(p.id));
-
             const items = selected.map(p => {
                 const price = getDisplayPrice(p);
                 const years = state.selected[p.id] ? state.selected[p.id].years : 1;
@@ -3071,8 +3036,10 @@
                 let priceTypeLabel = '';
                 if (p.isMarketing) {
                     const data = state.selected[p.id] || getDefaultMarketingConfig();
-                    priceTypeLabel = ' (' + getMarketingLabel(data.baseType || 'new_customer', data.regionMode) +
-                        ')';
+                    priceTypeLabel = ' (' + getMarketingLabel(p.id, data.baseType || 'new', data.regionMode,
+                        state.priceLevel, state.customerType) + ')';
+                } else if (p.type === 'custom') {
+                    priceTypeLabel = ' (自定义)';
                 }
                 return {
                     name: p.name + priceTypeLabel,
@@ -3082,9 +3049,7 @@
                     remark: p.remark || ''
                 };
             });
-
             const totalAmount = items.reduce((sum, item) => sum + item.total, 0);
-
             return {
                 hotelId: hotelId.value.trim() || '',
                 hotelName: hotelName.value.trim() || '',
@@ -3112,10 +3077,8 @@
                 alert('⚠️ 请先添加产品再预览报价');
                 return;
             }
-
             const popup = $('previewPopup');
             const body = $('previewBody');
-
             let html = `
                         <div style="margin-bottom:10px;color:#4a5a72;font-size:13px;">
                             <div>🏨 ${data.hotelName || '未填写酒店名称'} ${data.hotelId ? '（ID: ' + data.hotelId + '）' : ''}</div>
@@ -3124,14 +3087,10 @@
                         </div>
                         <div style="font-weight:600;color:#1a3a6b;margin-bottom:4px;">📦 产品明细</div>
                     `;
-
             data.items.forEach((item, i) => {
                 let priceDisplay;
-                if (item.unitPrice > 0) {
-                    priceDisplay = `¥${item.unitPrice.toLocaleString()}`;
-                } else {
-                    priceDisplay = '待计算';
-                }
+                if (item.unitPrice > 0) { priceDisplay = `¥${item.unitPrice.toLocaleString()}`; } else { priceDisplay =
+                        '待计算'; }
                 html += `
                             <div class="item">
                                 <span>${i+1}. ${item.name}</span>
@@ -3139,21 +3098,17 @@
                             </div>
                         `;
             });
-
             html += `
                         <div class="total-row">
                             <span>💰 合同总价</span>
                             <span>¥${data.totalAmount.toLocaleString()}</span>
                         </div>
                     `;
-
             body.innerHTML = html;
             popup.classList.add('show');
         }
 
-        function closePreview() {
-            $('previewPopup').classList.remove('show');
-        }
+        function closePreview() { $('previewPopup').classList.remove('show'); }
 
         function copyQuoteSummary() {
             const data = getQuoteData();
@@ -3161,7 +3116,6 @@
                 alert('⚠️ 请先添加产品');
                 return;
             }
-
             let text = `📄 华客产品报价单\n`;
             text += `═══════════════════════════════\n`;
             text += `🏨 ${data.hotelName || '未填写酒店名称'} ${data.hotelId ? '（ID: ' + data.hotelId + '）' : ''}\n`;
@@ -3169,25 +3123,18 @@
             text += `📅 ${data.generatedAt}\n`;
             text += `───────────────────────────────\n`;
             text += `📦 产品明细：\n`;
-
             data.items.forEach((item, i) => {
                 let priceDisplay;
-                if (item.unitPrice > 0) {
-                    priceDisplay = `¥${item.unitPrice.toLocaleString()}`;
-                } else {
-                    priceDisplay = '待计算';
-                }
-                text += `  ${i+1}. ${item.name}  ${priceDisplay} × ${item.years}年 = ¥${item.total.toLocaleString()}\n`;
+                if (item.unitPrice > 0) { priceDisplay = `¥${item.unitPrice.toLocaleString()}`; } else { priceDisplay =
+                        '待计算'; }
+                text +=
+                    `  ${i+1}. ${item.name}  ${priceDisplay} × ${item.years}年 = ¥${item.total.toLocaleString()}\n`;
             });
-
             text += `───────────────────────────────\n`;
             text += `💰 合同总价：¥${data.totalAmount.toLocaleString()}\n`;
             text += `═══════════════════════════════\n`;
-
             if (navigator.clipboard) {
-                navigator.clipboard.writeText(text).then(() => {
-                    alert('✅ 报价摘要已复制到剪贴板');
-                });
+                navigator.clipboard.writeText(text).then(() => { alert('✅ 报价摘要已复制到剪贴板'); });
             } else {
                 const textarea = document.createElement('textarea');
                 textarea.value = text;
@@ -3201,18 +3148,15 @@
 
         function downloadXLSX() {
             const data = getQuoteData();
-
             if (data.items.length === 0) {
                 alert('⚠️ 请先添加产品再导出');
                 return;
             }
-
             try {
                 if (typeof XLSX === 'undefined') {
                     alert('⚠️ 导出库正在加载，请稍后再试...');
                     return;
                 }
-
                 const rows = [
                     ['华客产品报价单'],
                     [],
@@ -3225,7 +3169,6 @@
                     [],
                     ['序号', '产品名称', '单价（元/年）', '签约年限', '小计（元）']
                 ];
-
                 data.items.forEach((item, i) => {
                     const priceDisplay = item.unitPrice > 0 ? item.unitPrice : '待计算';
                     rows.push([
@@ -3236,27 +3179,16 @@
                         item.total
                     ]);
                 });
-
                 rows.push([]);
                 rows.push(['', '', '', '💰 合同总价', data.totalAmount]);
-
                 const wb = XLSX.utils.book_new();
                 const ws = XLSX.utils.aoa_to_sheet(rows);
-                ws['!cols'] = [
-                    { wch: 8 },
-                    { wch: 28 },
-                    { wch: 18 },
-                    { wch: 14 },
-                    { wch: 18 }
-                ];
-
+                ws['!cols'] = [{ wch: 8 }, { wch: 28 }, { wch: 18 }, { wch: 14 }, { wch: 18 }];
                 XLSX.utils.book_append_sheet(wb, ws, '报价单');
-
                 const fileName =
                     `华客报价单_${data.hotelName || '酒店'}_${new Date().toISOString().slice(0, 10)}.xlsx`;
                 XLSX.writeFile(wb, fileName);
                 closePreview();
-
             } catch (e) {
                 console.error(e);
                 alert('❌ 导出失败：' + e.message);
@@ -3271,9 +3203,7 @@
             }
             const json = JSON.stringify(data, null, 2);
             if (navigator.clipboard) {
-                navigator.clipboard.writeText(json).then(() => {
-                    alert('✅ JSON数据已复制到剪贴板');
-                });
+                navigator.clipboard.writeText(json).then(() => { alert('✅ JSON数据已复制到剪贴板'); });
             } else {
                 const textarea = document.createElement('textarea');
                 textarea.value = json;
@@ -3286,23 +3216,78 @@
         }
 
         // ================================================================
-        //  🚀 启动
+        //  一键重置 + 滚动到顶部
         // ================================================================
+        function resetAll() {
+            if (!confirm('确定要重置所有数据吗？这将清空已选产品、酒店信息等。')) return;
+            state.selected = {};
+            state.roomCount = null;
+            state.customProducts = [];
+            state.customIdCounter = 0;
+            hotelName.value = '';
+            hotelId.value = '';
+            roomCount.value = '';
+            hotelLink.style.display = 'none';
+            queryTip.className = 'query-tip';
+            queryTip.textContent = '';
+            groupName.value = '';
+            groupStoreCount.value = '';
+            groupAvgRoom.value = '';
+            groupTotalRoom.textContent = '-';
+            groupInfoArea.classList.remove('show');
+            batchEnabled.checked = false;
+            batchCollapse.classList.remove('open');
+            batchResult.classList.remove('show');
+            batchNumber.value = 1;
+            historyTotal.value = 0;
+            priceLevel.value = 'market';
+            customerType.value = 'single';
+            groupScale.value = '5-29';
+            state.priceLevel = 'market';
+            state.customerType = 'single';
+            state.groupScale = '5-29';
+            groupScaleGroup.classList.remove('show');
+            singleHotelCard.style.display = 'block';
+            groupHotelCard.style.display = 'none';
+            searchInput.value = '';
+            searchResults.classList.remove('show');
+            customName.value = '';
+            customPrice.value = '';
+            renderAll();
+            updateAvailableCount();
+            updateStoreRange();
+            scrollToTop();
+            const tip = document.createElement('div');
+            tip.style.cssText =
+                'position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#1a3a6b;color:#fff;padding:12px 24px;border-radius:12px;font-weight:600;z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,0.2);';
+            tip.textContent = '✅ 已重置所有数据';
+            document.body.appendChild(tip);
+            setTimeout(() => tip.remove(), 2000);
+        }
 
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            const container = document.getElementById('appContainer');
+            if (container) { container.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+        }
+
+        // ================================================================
+        //  启动
+        // ================================================================
         roomCount.value = '';
         state.roomCount = null;
-
         renderAll();
         setTimeout(() => {
-            categoryFilter.dispatchEvent(new Event('change'));
+            const mainBtn = document.querySelector('.cat-btn[data-cat="main"]');
+            if (mainBtn) mainBtn.classList.add('active');
+            state.category = 'main';
+            customProductArea.style.display = 'none';
+            updateAvailableCount();
         }, 100);
-
         setTimeout(() => {
             if (batchEnabled) {
                 updateStoreRange();
-                if (batchEnabled.checked) {
-                    updateBatchResult();
-                }
+                if (batchEnabled.checked) { updateBatchResult(); }
             }
         }, 200);
     </script>
