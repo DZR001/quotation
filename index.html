@@ -1637,7 +1637,7 @@
         const AI_SINGLE = [{
             id: 'ai',
             name: 'AI',
-            prices: p6([14888, 17288, 22388, 31687.74, 44388, 60588], [12588, 14688, 18988, 26888, 37688, 51388],
+            prices: p6([14888, 17288, 22388, 31688, 44388, 60588], [12588, 14688, 18988, 26888, 37688, 51388],
                 [10388, 11988, 15588, 22088, 30888, 42188]),
             remark: 'AI仅包含标准产品',
             maxYears: 3,
@@ -1668,7 +1668,20 @@
             remark: '景区AI标准产品',
             maxYears: 3,
             type: 'main'
-        }];
+        },
+{
+    id: 'scenic_ops',
+    name: '景区AI-运营服务',
+    prices: p6([0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]),
+    remark: '如客户有额外的运营服务要求，可一单一议，按照具体目标和服务时限评估后报价',
+    maxYears: 1,
+    type: 'addon',
+    isSpecial: true,
+    isScenicOps: true,  // 标记为景区运营服务
+    specialLabel: '运营服务评估金额',
+    specialCalc: (val) => Math.round(val),
+    parentProductId: 'scenic_ai'  // 关联到景区AI
+}];
 
         const BI_PRODUCTS = [{
             id: 'bi_self_cem',
@@ -1728,7 +1741,17 @@
             remark: '新增英文ASR场景需按此收费',
             maxYears: 1,
             type: 'addon'
-        }, {
+        },
+	 { id: 'yue_asr',
+            name: '粤语ASR',
+            prices: p6([500, 1000, 2000, 4000, 6000, 22000], [500, 1000, 2000, 4000, 6000, 22000], [500, 1000, 2000,
+                4000, 6000, 22000
+            ]),
+            remark: '新增粤语ASR场景需按此收费',
+            maxYears: 1,
+            type: 'addon'
+        }, 
+        {
             id: 'en_ai',
             name: '英文AI',
             prices: p6([8388, 9588, 12488, 17688, 24788, 33788], [8388, 9588, 12488, 17688, 24788, 33788], [8388, 9588,
@@ -1759,10 +1782,19 @@
             id: 'new_ota',
             name: '新增OTA渠道',
             prices: p6([500, 500, 500, 500, 500, 500], [400, 400, 400, 400, 400, 400], [300, 300, 300, 300, 300, 300]),
-            remark: '新增OTA渠道按此收费',
+            remark: '新增渠道按此收费（Expedia/Agoda/Booking/TripAdvisor/hotel.com/猫途鹰，高德），默认接入近半年内数据',
             maxYears: 1,
             type: 'addon'
-        }, {
+        }, 
+{
+            id: 'yan_ota',
+            name: '点评数据抓取周期延长',
+            prices: p6([1000, 1000, 1000, 1000, 1000, 1000], [500, 500, 500, 500, 500, 500], [300, 300, 300, 300, 300, 300]),
+            remark: '延长点评抓取周期按此收费',
+            maxYears: 1,
+            type: 'addon'
+        },
+       {
             id: 'douyin_review',
             name: '抖音-酒店点评',
             prices: p6([2000, 2000, 2000, 2000, 2000, 2000], [1500, 1500, 1500, 1500, 1500, 1500], [1000, 1000, 1000,
@@ -1771,14 +1803,42 @@
             remark: '抓取抖音酒店点评',
             maxYears: 1,
             type: 'addon'
-        }, {
+        },
+	{
+            id: 'douyin_new_review',
+            name: '抖音-酒店关键词搜索',
+            prices: p6([12000, 12000,12000, 12000, 12000, 12000], [10000, 10000, 10000, 10000, 10000, 10000],  [10000, 10000, 10000, 10000, 10000, 10000]),
+            remark: '抓取经验模块下的综合内容及对应评论；1个关键词按此报价；最多抓取近180天',
+            maxYears: 1,
+            type: 'addon'
+        }, 
+
+{
+            id: 'weibo_new_review',
+            name: '微博-酒店关键词搜索',
+            prices: p6([8000, 8000, 8000, 8000, 8000, 8000], [5000, 5000, 5000, 5000, 5000, 5000], [5000, 5000, 5000, 5000, 5000, 5000]),
+            remark: '抓取微博内容及对应评论；1个关键词按此报价；最多抓取近180天',
+            maxYears: 1,
+            type: 'addon'
+        }, 
+
+ {
             id: 'admin_account',
-            name: '管理员账号（超出默认5个）',
+            name: '管理员账号（超出默认部分）',
             prices: p6([100, 100, 100, 100, 100, 100], [100, 100, 100, 100, 100, 100], [100, 100, 100, 100, 100, 100]),
             remark: '默认5个管理员账号，超出按此收费',
             maxYears: 1,
             type: 'addon'
-        }, {
+        },
+{
+            id: 'member_account',
+            name: '成员账号（超出默认部分）',
+            prices: p6([80, 80, 80, 80, 80, 80], [80, 80, 80, 80, 80, 80], [80, 80, 80, 80, 80, 80]),
+            remark: '默认10个，大区总15个，超出收费',
+            maxYears: 1,
+            type: 'addon'
+        },
+ {
             id: 'bi_report',
             name: '定制报表同步到单店CEM',
             prices: p6([2000, 2000, 2000, 2000, 2000, 2000], [1500, 1500, 1500, 1500, 1500, 1500], [1000, 1000, 1000,
@@ -1794,7 +1854,16 @@
             remark: '美团、大众点评、Google渠道餐饮接入',
             maxYears: 1,
             type: 'addon'
-        }, {
+        }, 
+{
+            id: 'catering_douyin_review',
+            name: '抖音-餐饮点评',
+            prices: p6([2000, 2000, 2000, 2000, 2000, 2000], [1500, 1500, 1500, 1500, 1500, 1500], [1000, 1000, 1000, 1000, 1000, 1000]),
+            remark: '抓取餐饮点评；需要酒店配合在华客系统内验证登录',
+            maxYears: 1,
+            type: 'addon'
+        }, 
+{
             id: 'park_ota',
             name: '乐园点评-OTA渠道',
             prices: p6([5000, 5000, 5000, 5000, 5000, 5000], [3000, 3000, 3000, 3000, 3000, 3000], [2000, 2000, 2000,
@@ -1803,7 +1872,18 @@
             remark: '携程、美团、大众点评渠道，每个乐园按此收费',
             maxYears: 1,
             type: 'addon'
-        }, {
+        }, 
+{
+            id: 'park_douyin_ota',
+            name: '抖音-乐园点评',
+            prices: p6([5000, 5000, 5000, 5000, 5000, 5000], [3000, 3000, 3000, 3000, 3000, 3000], [2000, 2000, 2000,
+                2000, 2000, 2000
+            ]),
+            remark: '抓取乐园点评；需要酒店配合在华客系统内验证登录',
+            maxYears: 1,
+            type: 'addon'
+        }, 
+{
             id: 'custom_dev',
             name: '定制开发（标准化）',
             prices: p6([0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]),
@@ -1815,90 +1895,233 @@
             specialCalc: (val) => Math.round(val * 2)
         }];
 
-        // 集团产品（简化）
-        const MAIN_GROUP = [{
-            id: 'hqm',
-            name: '住前-质检（HQM）',
-            prices: p6([4588, 4588, 4588, 4588, 4588, 4588], [3888, 3888, 3888, 3888, 3888, 3888], [3288, 3288, 3288,
-                3288, 3288, 3288
-            ]),
-            remark: '包含住前-质检（HQM）标准模板',
-            maxYears: 3,
-            type: 'main'
-        }, {
-            id: 'voice',
-            name: '住中-语音',
-            prices: p6([11588.2, 13688, 18188, 26288, 36688, 50688], [9888, 11588.2, 15488, 22388, 31188, 43099.2],
-                [7288, 9588, 12788, 18488, 25688, 35488]),
-            remark: '包含住中语音',
-            maxYears: 3,
-            type: 'main'
-        }, {
-            id: 'review',
-            name: '住后-点评',
-            prices: p6([5988, 5988, 5988, 5988, 5988, 5988], [5188, 5188, 5188, 5188, 5188, 5188], [4288, 4288, 4288,
-                4288, 4288, 4288
-            ]),
-            remark: '包含住后点评模块',
-            maxYears: 3,
-            type: 'main'
-        }, {
-            id: 'voice_review',
-            name: '住中+住后',
-            prices: p6([14888, 18688, 23188, 30088, 39388, 52088], [12688, 15888, 19688, 25588, 33488, 44188], [9988,
-                13088, 16188, 21088, 27588, 36388
-            ]),
-            remark: '包含住中语音及住后点评模块',
-            maxYears: 3,
-            type: 'main'
-        }, {
-            id: 'all',
-            name: '住前+住中+住后',
-            prices: p6([16288, 21688, 25788, 33088, 42388, 54988], [13888, 18488, 21888, 28088, 35988, 46788], [11488,
-                15188, 17988, 23188, 29688, 38588
-            ]),
-            remark: '包含住前质检（HQM）、住中语音及住后点评模块',
-            maxYears: 3,
-            type: 'main'
-        }];
+        // 集团主产品 - 按规模分3档：5-29家、30-99家、100-999家
+// 每个规模6个房间档位：≤80间、81-150间、151-300间、301-500间、501-800间、≥801间
+const MAIN_GROUP = [{
+    id: 'hqm',
+    name: '住前-质检（HQM）',
+    // 5-29家: 4588, 4588, 4588, 4588, 4588, 4588
+    // 30-99家: 4288, 4288, 4288, 4288, 4288, 4288
+    // 100-999家: 3788, 3788, 3788, 3788, 3788, 3788
+    prices: {
+        market: {
+            '5-29': [4588, 4588, 4588, 4588, 4588, 4588],
+            '30-99': [4288, 4288, 4288, 4288, 4288, 4288],
+            '100-999': [3788, 3788, 3788, 3788, 3788, 3788]
+        },
+        sales: {
+            '5-29': [3888, 3888, 3888, 3888, 3888, 3888],
+            '30-99': [3688, 3688, 3688, 3688, 3688, 3688],
+            '100-999': [3288, 3288, 3288, 3288, 3288, 3288]
+        },
+        region: {
+            '5-29': [3288, 3288, 3288, 3288, 3288, 3288],
+            '30-99': [3088, 3088, 3088, 3088, 3088, 3088],
+            '100-999': [2688, 2688, 2688, 2688, 2688, 2688]
+        }
+    },
+    remark: '包含住前-质检（HQM）标准模板',
+    maxYears: 3,
+    type: 'main',
+    isGroup: true
+}, {
+    id: 'voice',
+    name: '住中-语音',
+    prices: {
+        market: {
+            '5-29': [11588, 13688, 18188, 26288, 36688, 50688],
+            '30-99': [10988, 12888, 17188, 24788, 34588, 47888],
+            '100-999': [9688, 11388, 15188, 21888, 30588, 42288]
+        },
+        sales: {
+            '5-29': [9888, 11588, 15488, 22388, 31188, 43099],
+            '30-99': [9388, 10988, 14588, 21088, 29388, 40688],
+            '100-999': [8288, 9688, 12888, 18588, 25988, 35988]
+        },
+        region: {
+            '5-29': [7288, 9588, 12788, 18488, 25688, 35488],
+            '30-99': [6888, 8988, 12088, 17488, 24288, 33488],
+            '100-999': [6088, 7988, 10688, 15388, 21388, 29588]
+        }
+    },
+    remark: '包含住中语音(默认包含3个部门的语音数据，推荐前厅/客房/总机），不含住后点评，不含硬件',
+    maxYears: 3,
+    type: 'main',
+    isGroup: true
+}, {
+    id: 'review',
+    name: '住后-点评',
+    prices: {
+        market: {
+            '5-29': [5988, 5988, 5988, 5988, 5988, 5988],
+            '30-99': [5588, 5588, 5588, 5588, 5588, 5588],
+            '100-999': [4988, 4988, 4988, 4988, 4988, 4988]
+        },
+        sales: {
+            '5-29': [5188, 5188, 5188, 5188, 5188, 5188],
+            '30-99': [4888, 4888, 4888, 4888, 4888, 4888],
+            '100-999': [4288, 4288, 4288, 4288, 4288, 4288]
+        },
+        region: {
+            '5-29': [4288, 4288, 4288, 4288, 4288, 4288],
+            '30-99': [3988, 3988, 3988, 3988, 3988, 3988],
+            '100-999': [3588, 3588, 3588, 3588, 3588, 3588]
+        }
+    },
+    remark: '包含住后点评模块，默认接入国内6个OTA渠道近半年内数据',
+    maxYears: 3,
+    type: 'main',
+    isGroup: true
+}, {
+    id: 'voice_review',
+    name: '住中+住后',
+    prices: {
+        market: {
+            '5-29': [14888, 18688, 23188, 30088, 39388, 52088],
+            '30-99': [14088, 17588, 21888, 28388, 37188, 49188],
+            '100-999': [12488, 15588, 19288, 25088, 32788, 43388]
+        },
+        sales: {
+            '5-29': [12688, 15888, 19688, 25588, 33488, 44188],
+            '30-99': [11988, 14988, 18588, 24188, 31588, 41788],
+            '100-999': [10588, 13188, 16488, 21288, 27888, 36888]
+        },
+        region: {
+            '5-29': [9988, 13088, 16188, 21088, 27588, 36388],
+            '30-99': [9488, 12388, 15288, 19888, 25988, 34388],
+            '100-999': [8388, 10888, 13488, 17588, 22988, 30288]
+        }
+    },
+    remark: '包含住中语音及住后点评模块，具体内容同单模块功能',
+    maxYears: 3,
+    type: 'main',
+    isGroup: true
+}, {
+    id: 'all',
+    name: '住前+住中+住后',
+    prices: {
+        market: {
+            '5-29': [16288, 21688, 25788, 33088, 42388, 54988],
+            '30-99': [15388, 20488, 24288, 31188, 40088, 51988],
+            '100-999': [13588, 18088, 21488, 27588, 35388, 45888]
+        },
+        sales: {
+            '5-29': [13888, 18488, 21888, 28088, 35988, 46788],
+            '30-99': [13088, 17488, 20688, 26488, 33988, 44188],
+            '100-999': [11588, 15388, 18288, 23388, 29988, 38988]
+        },
+        region: {
+            '5-29': [11488, 15188, 17988, 23188, 29688, 38588],
+            '30-99': [10788, 14388, 16988, 21888, 28088, 36388],
+            '100-999': [9588, 12688, 14988, 19288, 24788, 32088]
+        }
+    },
+    remark: '包含住前质检（HQM）、住中语音及住后点评模块，具体内容同单模块功能',
+    maxYears: 3,
+    type: 'main',
+    isGroup: true
+}];
 
-        const AI_GROUP = [{
-            id: 'ai',
-            name: 'AI',
-            prices: p6([13688, 15988, 20588, 29188, 40888, 55788], [11588, 13588, 17488, 24788, 34688, 47288], [9588,
-                11088, 14388, 20388, 28488, 38888
-            ]),
-            remark: 'AI标准产品',
-            maxYears: 3,
-            type: 'main'
-        }, {
-            id: 'ai_voice',
-            name: 'AI+住中',
-            prices: p6([25088, 29288, 38488, 54988, 76788, 105388], [21288, 24888, 32588, 46588, 65188, 89488],
-                [16688, 20488, 26888, 38388, 53688, 73488]),
-            remark: 'AI + 住中语音',
-            maxYears: 3,
-            type: 'main'
-        }, {
-            id: 'ai_all',
-            name: 'AI+住中+住后',
-            prices: p6([27488, 33288, 42088, 56888, 76988, 103388], [23388, 28288, 35788, 48388, 65488, 87788],
-                [18788, 23188, 29388, 39788, 53888, 72188]),
-            remark: 'AI + 住中语音 + 住后点评',
-            maxYears: 3,
-            type: 'main'
-        }];
+       // 集团AI产品
+const AI_GROUP = [{
+    id: 'ai',
+    name: 'AI',
+    prices: {
+        market: {
+            '5-29': [13688, 15988, 20588, 29188, 40888, 55788],
+            '30-99': [13688, 15988, 20588, 29188, 40888, 55788],
+            '100-999': [13688, 15988, 20588, 29188, 40888, 55788]
+        },
+        sales: {
+            '5-29': [11588, 13588, 17488, 24788, 34688, 47288],
+            '30-99': [11588, 13588, 17488, 24788, 34688, 47288],
+            '100-999': [11588, 13588, 17488, 24788, 34688, 47288]
+        },
+        region: {
+            '5-29': [9588, 11088, 14388, 20388, 28488, 38888],
+            '30-99': [9588, 11088, 14388, 20388, 28488, 38888],
+            '100-999': [9588, 11088, 14388, 20388, 28488, 38888]
+        }
+    },
+    remark: 'AI标准产品，同单店版',
+    maxYears: 3,
+    type: 'main',
+    isGroup: true
+}, {
+    id: 'ai_voice',
+    name: 'AI+住中',
+    prices: {
+        market: {
+            '5-29': [25088, 29288, 38488, 54988, 76788, 105388],
+            '30-99': [25088, 29288, 38488, 54988, 76788, 105388],
+            '100-999': [25088, 29288, 38488, 54988, 76788, 105388]
+        },
+        sales: {
+            '5-29': [21288, 24888, 32588, 46588, 65188, 89488],
+            '30-99': [21288, 24888, 32588, 46588, 65188, 89488],
+            '100-999': [21288, 24888, 32588, 46588, 65188, 89488]
+        },
+        region: {
+            '5-29': [16688, 20488, 26888, 38388, 53688, 73488],
+            '30-99': [16688, 20488, 26888, 38388, 53688, 73488],
+            '100-999': [16688, 20488, 26888, 38388, 53688, 73488]
+        }
+    },
+    remark: 'AI + 住中语音',
+    maxYears: 3,
+    type: 'main',
+    isGroup: true
+}, {
+    id: 'ai_all',
+    name: 'AI+住中+住后',
+    prices: {
+        market: {
+            '5-29': [27488, 33288, 42088, 56888, 76988, 103388],
+            '30-99': [27488, 33288, 42088, 56888, 76988, 103388],
+            '100-999': [27488, 33288, 42088, 56888, 76988, 103388]
+        },
+        sales: {
+            '5-29': [23388, 28288, 35788, 48388, 65488, 87788],
+            '30-99': [23388, 28288, 35788, 48388, 65488, 87788],
+            '100-999': [23388, 28288, 35788, 48388, 65488, 87788]
+        },
+        region: {
+            '5-29': [18788, 23188, 29388, 39788, 53888, 72188],
+            '30-99': [18788, 23188, 29388, 39788, 53888, 72188],
+            '100-999': [18788, 23188, 29388, 39788, 53888, 72188]
+        }
+    },
+    remark: 'AI + 住中语音 + 住后点评',
+    maxYears: 3,
+    type: 'main',
+    isGroup: true
+}];
+
+// ================================================================
+//  获取集团产品价格
+// ================================================================
+function getGroupProductPrice(product, level, roomIdx) {
+    if (!product.isGroup || !product.prices) return 0;
+    const scale = state.groupScale || '5-29';
+    const priceLevel = level || state.priceLevel;
+    const scalePrices = product.prices[priceLevel];
+    if (!scalePrices) return 0;
+    const prices = scalePrices[scale];
+    if (!prices) return 0;
+    return prices[roomIdx] || 0;
+}
 
         // ================================================================
         //  获取产品
         // ================================================================
         function getMainProducts() {
-            const isGroup = state.customerType === 'group';
-            if (!isGroup) {
-                return [...MAIN_SINGLE, ...AI_SINGLE, ...SCENIC_AI, ...BI_PRODUCTS, ...MARKETING_PRODUCTS];
-            }
-            return [...MAIN_GROUP, ...AI_GROUP, ...SCENIC_AI, ...BI_PRODUCTS, ...MARKETING_PRODUCTS];
-        }
+    const isGroup = state.customerType === 'group';
+    if (!isGroup) {
+        return [...MAIN_SINGLE, ...AI_SINGLE, ...SCENIC_AI, ...BI_PRODUCTS, ...MARKETING_PRODUCTS];
+    }
+    // 集团模式：使用集团产品 + 集团AI
+    return [...MAIN_GROUP, ...AI_GROUP, ...SCENIC_AI, ...BI_PRODUCTS, ...MARKETING_PRODUCTS];
+}
 
         function getAddonProducts() {
             return [...ADDON_PRODUCTS];
@@ -1969,41 +2192,48 @@
         //  价格获取
         // ================================================================
         function getProductPrice(product) {
-            if (product.isMarketing) {
-                const data = state.selected[product.id] || getDefaultMarketingConfig();
-                const baseType = data.baseType || 'new';
-                const regionMode = data.regionMode || null;
-                return getMarketingPrice(product.id, state.priceLevel, state.customerType, regionMode, baseType);
+    if (product.isMarketing) {
+        const data = state.selected[product.id] || getDefaultMarketingConfig();
+        const baseType = data.baseType || 'new';
+        const regionMode = data.regionMode || null;
+        return getMarketingPrice(product.id, state.priceLevel, state.customerType, regionMode, baseType);
+    }
+
+    if (product.type === 'custom') {
+        return product.price || 0;
+    }
+
+    const level = state.priceLevel;
+    let roomCountVal = state.roomCount || 0;
+    if (roomCountVal > 99999) roomCountVal = 99999;
+    if (roomCountVal < 1) return 0;
+
+    const idx = getRoomIndex(roomCountVal);
+    if (idx === -1) return 0;
+
+    if (product.isSpecial) {
+        const data = state.selected[product.id];
+        if (data && data.specialValue) {
+            const val = parseFloat(data.specialValue);
+            if (!isNaN(val) && val > 0 && product.specialCalc) {
+                return product.specialCalc(val);
             }
-
-            if (product.type === 'custom') {
-                return product.price || 0;
-            }
-
-            const level = state.priceLevel;
-            let roomCountVal = state.roomCount || 0;
-            if (roomCountVal > 99999) roomCountVal = 99999;
-            if (roomCountVal < 1) return 0;
-
-            const idx = getRoomIndex(roomCountVal);
-            if (idx === -1) return 0;
-
-            if (product.isSpecial) {
-                const data = state.selected[product.id];
-                if (data && data.specialValue) {
-                    const val = parseFloat(data.specialValue);
-                    if (!isNaN(val) && val > 0 && product.specialCalc) {
-                        return product.specialCalc(val);
-                    }
-                }
-                return 0;
-            }
-
-            if (!product.prices) return 0;
-            const prices = product.prices[level];
-            if (!prices) return 0;
-            return prices[idx] || 0;
         }
+        return 0;
+    }
+
+    if (!product.prices) return 0;
+    
+    // 集团产品特殊处理
+    if (product.isGroup) {
+        return getGroupProductPrice(product, level, idx);
+    }
+    
+    // 普通产品
+    const prices = product.prices[level];
+    if (!prices) return 0;
+    return prices[idx] || 0;
+}
 
         function getDisplayPrice(product) {
             if (product.isMarketing) {
